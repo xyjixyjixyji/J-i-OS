@@ -5,8 +5,9 @@ VGA_BUFFER equ 0xb8000
 VGA_SIZE   equ 25 * 80 * 2
 COLOR_WB   equ 0x0f ; the color byte for each character
 
+; char from ebx
 print_string_pm:
-    pusha
+    pushad
     mov edx, VGA_BUFFER
 
 print_string_pm_loop:
@@ -23,13 +24,13 @@ print_string_pm_loop:
     jmp print_string_pm_loop
 
 print_string_pm_done:
-    popa
+    popad
     ret
 
 ; clear the vga_buffer
 space equ ' '
 clear_vga_pm:
-    pusha
+    pushad
     mov ebx, VGA_BUFFER
     mov ecx, VGA_SIZE
     mov edx, 0
@@ -52,5 +53,5 @@ clear_vga_loop:
     jmp clear_vga_loop
 
 clear_vga_done:
-    popa
+    popad
     ret
