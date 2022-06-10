@@ -28,6 +28,8 @@ dw 0xaa55
 %include "./prot/gdt.S"
 [bits 32]
 BEGIN_PM: ; after the switch we will get here
+    call clear_vga_pm
+
     mov ebx, MSG_PROT_MODE
     call print_string_pm ; Note that this will be written at the top left corner
     jmp $

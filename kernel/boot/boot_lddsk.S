@@ -4,7 +4,7 @@ disk_load:
 
     mov ah, 0x02
     mov al, dh      ; expected to be loaded w/ the # of sectors to read
-    mov cl, 0x02    ; first available sector, 1 is bootloader
+    mov cl, 0x02    ; which sector to start
     mov ch, 0x00    ; cylinder #
     mov dh, 0x00    ; head #
     int 0x13        ; caller setup buffer to [es:bx]
