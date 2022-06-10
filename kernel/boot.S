@@ -1,32 +1,27 @@
-mov ah, 0x0e ; tty mode
-mov al, 'H'
-int 0x10
-mov al, 'e'
-int 0x10
-mov al, 'l'
-int 0x10
-int 0x10
-mov al, 'o'
-int 0x10
-mov al, ','
-int 0x10
-mov al, ' '
-int 0x10
-mov al, 'W'
-int 0x10
-mov al, 'o'
-int 0x10
-mov al, 'r'
-int 0x10
-mov al, 'l'
-int 0x10
-mov al, 'd'
-int 0x10
-mov al, '!'
-int 0x10
+[org 0x7c00]
+    mov bp, 0x8000	; stack base
+    mov sp, bp
 
-jmp $
+    mov bx, 0x9000	; buffer, [es:bx]
+    mov dh, 2
 
-times 510 - ($ - $$) db 0
+    call disk_load
 
+    mov dx, [0x9000]
+    call print_hex
+
+    call print_nl
+
+    mov dx, [0x9000 + 512] ; first word from second sector
+    call print_hex
+
+    jmp $
+
+%include "./boot_prt.S"
+%include "./boot_lddsk.S"
+
+times 510-($-$$) db 0
 dw 0xaa55
+
+times 256 dw 0xdada ; sec 2
+times 256 dw 0xface ; sec 3
