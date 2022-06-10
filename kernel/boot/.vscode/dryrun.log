@@ -1,0 +1,5 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/Ji/Documents/gitrepos/JOS/kernel/boot'
+nasm -f bin boot.S -o boot.bin
+make: Leaving directory `/Users/Ji/Documents/gitrepos/JOS/kernel/boot'
+ 

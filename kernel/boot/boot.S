@@ -5,13 +5,15 @@
     mov bx, MSG_REAL_MODE
     call print ; This will be written after the BIOS messages
 
+    ; before we swtch to pm, we need to load another sector
+
     call switch_to_pm
     jmp $ ; this will actually never be executed
 
 %include "./boot_prt.S"
-%include "./gdt.S"
-%include "./32b_prt.S"
-%include "./prot_swtch.S"
+%include "./prot/gdt.S"
+%include "./prot/prot_prt.S"
+%include "./prot/prot_swtch.S"
 
 [bits 32]
 BEGIN_PM: ; after the switch we will get here
