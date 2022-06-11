@@ -7,7 +7,7 @@
 
     ; before we swtch to pm, we need to load another sector
     mov bx, 0x7E00
-    mov dh, 1
+    mov dh, 2 ; read 2 sectors
     call disk_load
 
     call switch_to_pm
@@ -18,17 +18,18 @@ MSG_REAL_MODE db "Started in 16-bit real mode", 0
 %include "./boot_prt.S"
 %include "./boot_lddsk.S"
 %include "./prot/prot_swtch.S"
-%include "./prot/prot_lm.S"
-
 
 ; bootsector
 times 510-($-$$) db 0
 dw 0xaa55
 
+
 PROT_MODE_START:
 
-%include "./prot/prot_prt.S"
 %include "./prot/gdt.S"
+%include "./prot/prot_prt.S"
+%include "./prot/prot_lm.S"
+%include "./prot/prot_pg.S"
 MSG_PROT_MODE db "Loaded 32-bit protected mode", 0
 MSG_LM_SUPPORTED db "64-bit long mode supported", 0
 
@@ -37,11 +38,16 @@ BEGIN_PM: ; after the switch we will get here
     call clear_vga_pm
     call detect_lm_prot
 
+    call init_pgtbl_prot
+
     mov ebx, MSG_LM_SUPPORTED
     call print_string_pm
 
     jmp $
 
-    mov ebx, MSG_PROT_MODE
-    call print_string_pm ; Note that this will be written at the top left corner
-    jmp $
+times 512-($-PROT_MODE_START) db 0
+
+; beginning of long mode (sector 3)
+BEGIN_LONG_MODE:
+
+times 512-($-BEGIN_LONG_MODE) db 0
