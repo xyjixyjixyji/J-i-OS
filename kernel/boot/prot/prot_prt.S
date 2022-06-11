@@ -35,9 +35,9 @@ clear_vga_pm:
     mov ecx, VGA_SIZE
     mov edx, 0
 
-clear_vga_loop:
+clear_vga_pm_loop:
     cmp edx, ebx
-    je clear_vga_done
+    je clear_vga_pm_done
 
     push edx
 
@@ -50,8 +50,8 @@ clear_vga_loop:
     pop edx
     add edx, 2
 
-    jmp clear_vga_loop
+    jmp clear_vga_pm_loop
 
-clear_vga_done:
+clear_vga_pm_done:
     popad
     ret
