@@ -6,8 +6,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
+ 
+make: *** No rule to make target `all'.  Stop.
 
-# Make data base, printed on Sat Jun 11 00:32:27 2022
+
+# Make data base, printed on Sat Jun 11 23:29:29 2022
 
 # Variables
 
@@ -23,14 +26,20 @@ LC_CTYPE = en_US.UTF-8
 VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
+# makefile (from `Makefile', line 1)
+B = boot
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # automatic
 @F = $(notdir $@)
 # makefile
 CURDIR := /Users/Ji/Documents/gitrepos/JOS
+# makefile (from `Makefile', line 2)
+K = kernel
 # makefile
 SHELL = /bin/sh
+# makefile (from `Makefile', line 3)
+U = user
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
@@ -44,11 +53,11 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:/usr/local/share/info:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/v6/q6kwcrrn67j9yz1yx4ckcd900000gn/T/vscode-ipc-e473069b-fd70-435d-b261-c5b86fedbe10.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/v6/q6kwcrrn67j9yz1yx4ckcd900000gn/T/vscode-ipc-aa256ff9-7fee-4ad8-b3af-a44cafcc03f6.sock
 # environment
-VSCODE_CWD = /Users/Ji/Documents/gitclones/os-tutorial/05-bootsector-functions-strings
+VSCODE_CWD = /Users/Ji/Documents/gitrepos/JOS
 # environment
-PATH = /opt/homebrew/opt/curl/bin:/opt/homebrew/bin:/Users/Ji/.yarn/bin:/Users/Ji/.config/yarn/global/node_modules/.bin:/Applications/CMake.app/Contents/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Users/Ji/opt/anaconda3/bin:/Users/Ji/opt/anaconda3/condabin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Ji/.cargo/bin:/usr/local/opt/riscv-gnu-toolchain/bin:/Library/tex/texbin:/Users/Ji/llvm-project/build/bin
+PATH = /opt/homebrew/opt/curl/bin:/opt/homebrew/bin:/Users/Ji/.yarn/bin:/Users/Ji/.config/yarn/global/node_modules/.bin:/Applications/CMake.app/Contents/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Users/Ji/opt/anaconda3/bin:/Users/Ji/opt/anaconda3/condabin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Ji/.cargo/bin:/usr/local/opt/riscv-gnu-toolchain/bin:/Library/tex/texbin:/Users/Ji/llvm-project/build/bin:/opt/homebrew/Cellar/llvm/13.0.1_1/bin
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
@@ -116,13 +125,13 @@ LC_TERMINAL = iTerm2
 # environment
 SHLVL = 3
 # environment
-TERM_SESSION_ID = w0t0p1:5D228FB1-4EC8-4460-956D-A5AC5D6BE864
+TERM_SESSION_ID = w1t0p0:9E725FEA-3C27-4C47-BED8-6F2B126C7442
 # default
 MAKE_VERSION := 3.81
 # environment
 USER = Ji
 # makefile
-.DEFAULT_GOAL := 
+.DEFAULT_GOAL := run
 # default
 MAKECMDGOALS := all
 # environment
@@ -156,7 +165,7 @@ TERM_PROGRAM_VERSION = 3.4.15
 # environment
 HOMEBREW_SHELLENV_PREFIX = /usr/local
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.15671785.15671791.D94AE15D-5FE1-462F-B7A2-40CCEFD64DD7
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.15671785.15671791.EF71EC1B-4F6C-40D8-A370-68D29B0E1037
 # environment
 LC_TERMINAL_VERSION = 3.4.15
 # environment
@@ -166,7 +175,7 @@ HOMEBREW_PREFIX = /opt/homebrew
 # automatic
 +F = $(notdir $+)
 # environment
-ITERM_SESSION_ID = w0t0p1:5D228FB1-4EC8-4460-956D-A5AC5D6BE864
+ITERM_SESSION_ID = w1t0p0:9E725FEA-3C27-4C47-BED8-6F2B126C7442
 # environment
 HOMEBREW_REPOSITORY = /opt/homebrew
 # environment
@@ -216,7 +225,7 @@ _CE_CONDA =
 # environment
 LANG = C
 # variable set hash-table stats:
-# Load=102/1024=10%, Rehash=0, Collisions=7/125=6%
+# Load=105/1024=10%, Rehash=0, Collisions=7/129=5%
 
 # Pattern-specific Variable Values
 
@@ -224,9 +233,9 @@ LANG = C
 
 # Directories
 
-# . (device 16777230, inode 15598165): 9 files, no impossibilities.
+# . (device 16777230, inode 15598165): 12 files, no impossibilities.
 
-# 9 files, no impossibilities in 1 directories.
+# 12 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -243,6 +252,11 @@ all:
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
+.PHONY: clean run
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
 # Not a target:
 .SUFFIXES:
 #  Implicit rule search has not been done.
@@ -252,7 +266,7 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-09 20:03:33
+#  Last modified 2022-06-11 23:25:08
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -264,12 +278,35 @@ Makefile:
 #  Modification time never checked.
 #  File has not been updated.
 
+run:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 8):
+	make -C $B
+	make -C $K
+	cp ./$B/boot ./os.img
+	cat $K/kernel >> ./os.img
+	qemu-system-x86_64 -drive format=raw,file=os.img
+	
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 16):
+	rm -rf */.o $K/*.o $K/*.elf $K/kernel $B/boot *.img
+	
+
 # files hash-table stats:
-# Load=4/1024=0%, Rehash=0, Collisions=0/16=0%
+# Load=7/1024=1%, Rehash=0, Collisions=0/21=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
 
+ 
 # No general (`VPATH' variable) search path.
 
 # # of strings in strcache: 1
@@ -277,8 +314,6 @@ Makefile:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sat Jun 11 00:32:27 2022
+# Finished Make data base on Sat Jun 11 23:29:29 2022
 
  
-make: *** No rule to make target `all'.  Stop.
-

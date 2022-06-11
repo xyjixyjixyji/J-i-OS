@@ -1,10 +1,5 @@
 [bits 32] ; using 32-bit protected mode
 
-; this is how constants are defined
-VGA_BUFFER equ 0xb8000
-VGA_SIZE   equ 25 * 80 * 2
-COLOR_WB   equ 0x0f ; the color byte for each character
-
 ; char from ebx
 print_string_pm:
     pushad
