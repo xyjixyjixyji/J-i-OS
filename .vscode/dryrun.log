@@ -1,9 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Users/Ji/Documents/gitrepos/JOS'
-make -C boot
-make -C kernel
-cp ./boot/boot ./os.img
-cat kernel/kernel >> ./os.img
-qemu-system-x86_64 -drive format=raw,file=os.img
-make: Leaving directory `/Users/Ji/Documents/gitrepos/JOS'
- 
