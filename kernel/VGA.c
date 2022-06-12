@@ -49,6 +49,14 @@ VGA_putstr(const char *str, const u8 fg, const u8 bg)
     }
 }
 
+void
+VGA_putint(const int n)
+{
+    char str[32];
+    itoa(n, str, 2);
+    VGA_putstr(str, COLOR_RED, COLOR_BLK);
+}
+
 u16
 get_cpos()
 {

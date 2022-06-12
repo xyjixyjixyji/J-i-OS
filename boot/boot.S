@@ -18,7 +18,7 @@
     ; before we swtch to pm, we need to load another sector
     mov dx, 0x7E00
     mov bx, 0x0002
-    mov cx, 0x0005
+    mov cx, 0x0007
 
     call disk_load
 
