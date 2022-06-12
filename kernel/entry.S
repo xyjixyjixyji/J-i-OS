@@ -1,6 +1,6 @@
 [bits 64]
-[extern main]
+[extern _start]
 
-_start:
-    call main
+_entry:
+    call _start
     jmp $
