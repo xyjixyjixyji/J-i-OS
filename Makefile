@@ -12,17 +12,16 @@ QEMUTESTARGS = $(QEMUARGS) -display none
 
 .PHONY: qemu sz lldb clean
 
-qemu:
-	make -C $B && make -C $K
-	cp ./$B/boot ./os.img && cat $K/kernel >> ./os.img
-
+qemu: img
 	$(QEMU) $(QEMUARGS)
 
-test:
+test: img
+	$(QEMU) $(QEMUTESTARGS)
+
+img:
 	make -C $B && make -C $K
 	cp ./$B/boot ./os.img && cat $K/kernel >> ./os.img
-
-	$(QEMU) $(QEMUTESTARGS)
+	sh ksz.sh
 
 
 BYTESZ=$(shell wc -c < os.img)
