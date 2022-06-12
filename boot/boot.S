@@ -16,9 +16,13 @@
     call print ; This will be written after the BIOS messages
 
     ; before we swtch to pm, we need to load another sector
+    mov dx, 0
+    mov es, dx
+
     mov dx, 0x7E00
-    mov bx, 0x0002
-    mov cx, 0x0007
+    ; 0xFFFFF - 0x7E00 = 0xF81FF(1016319B) = 992 KB
+    ; ~2000sectors
+    mov cx, 0x0080
 
     call disk_load
 

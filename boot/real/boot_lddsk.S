@@ -17,8 +17,7 @@ disk_load:
     mov al, cl
 
     ; The sector to read from must be in cl, but our function takes it
-    ; in bl
-    mov cl, bl
+    mov cl, 0x02
 
     ; The destination address must be in bx, but our function takes it
     ; in dx
