@@ -1,2 +1,19 @@
 # JOS
 An operating system from scratch
+
+# Directory
+boot -> bootloader, from real mode -> protected mode -> long mode (heavily borrowed from osdev.org)
+kernel -> kernel code, style like xv6 (MIT 6.828)
+
+ksz.sh -> print out image size in byte, the bytesize / 512(sector size) should 
+          be grater than the # sectors we read in real mode. Read boot/boot_lddsk.S.
+
+# Run
+make qemu:
+    run in qemu, with display
+
+make test:
+    without display, uart output redirected to stdout
+
+make img:
+    build os.img from bootloader and kernel code
