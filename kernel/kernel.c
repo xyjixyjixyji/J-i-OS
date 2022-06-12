@@ -9,10 +9,8 @@ main()
     const char *info = "Kernel booted with a better VGA buffer...\n";
     VGA_putstr(info, COLOR_GREEN, COLOR_BLK);
 
-    int a = 32;
-    VGA_putint(32);
-
     uart_init();
+    uart_putstr(info);
 
     return 0;
 }

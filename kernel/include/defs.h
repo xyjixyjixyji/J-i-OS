@@ -7,7 +7,8 @@
 void VGA_clear(const u8, const u8);
 void VGA_putc(const char, const u8, const u8);
 void VGA_putstr(const char*, const u8, const u8);
-void VGA_putint(const int);
+void VGA_putint(const int, int);
+void VGA_panic(const char*);
 u16  get_cpos();
 void set_cpos(u8, u8);
 void show_cursor();

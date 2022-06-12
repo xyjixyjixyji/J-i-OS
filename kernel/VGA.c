@@ -50,11 +50,19 @@ VGA_putstr(const char *str, const u8 fg, const u8 bg)
 }
 
 void
-VGA_putint(const int n)
+VGA_putint(const int n, int radix)
 {
     char str[32];
-    itoa(n, str, 2);
+    itoa(n, str, radix);
     VGA_putstr(str, COLOR_RED, COLOR_BLK);
+}
+
+void
+VGA_panic(const char* str)
+{
+    VGA_putstr(str, COLOR_RED, COLOR_BLK);
+    while(1)
+	;
 }
 
 u16

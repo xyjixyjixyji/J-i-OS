@@ -3,19 +3,27 @@ K=kernel
 U=user
 
 QEMU=qemu-system-x86_64
+
 QEMUARGS = -drive format=raw,file=os.img \
 		   -device isa-debug-exit,iobase=0xf4,iosize=0x04 \
-		   -serial stdio \
+		   -serial stdio
 
-.PHONY: run sz lldb clean
+QEMUTESTARGS = $(QEMUARGS) -display none
 
-run:
-	make -C $B
-	make -C $K
-	cp ./$B/boot ./os.img
-	cat $K/kernel >> ./os.img
+.PHONY: qemu sz lldb clean
+
+qemu:
+	make -C $B && make -C $K
+	cp ./$B/boot ./os.img && cat $K/kernel >> ./os.img
 
 	$(QEMU) $(QEMUARGS)
+
+test:
+	make -C $B && make -C $K
+	cp ./$B/boot ./os.img && cat $K/kernel >> ./os.img
+
+	$(QEMU) $(QEMUTESTARGS)
+
 
 BYTESZ=$(shell wc -c < os.img)
 sz:

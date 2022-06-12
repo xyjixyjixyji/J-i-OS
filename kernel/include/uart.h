@@ -6,12 +6,12 @@
 #define UART0	0x3F8
 
 typedef struct __attribute__((packed)){
-    u8 data;
-    u8 inte;
-    u8 fifo;
-    u8 line;
-    u8 modem;
-    u8 line_stat;
+    u16 data;
+    u16 inte;
+    u16 fifo;
+    u16 line;
+    u16 modem;
+    u16 line_stat;
 } srlport;
 
 typedef u8 uart_linests_t;
