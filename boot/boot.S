@@ -19,13 +19,26 @@
     mov dx, 0
     mov es, dx
 
+    mov bx, 4   ; total 256KB
+LOAD_64KB:
+    cmp bx, 0
+    je LOAD_DONE
+
+    ; es:dx = dest paddr
     mov dx, 0x7E00
-    ; 0xFFFFF - 0x7E00 = 0xF81FF(1016319B) = 992 KB
-    ; ~2000sectors
+    ; cl = # of sectors, cannot bigger than 0x80h, do this in loop
+    ; 0x80h sectors = 0x80h * 512B = 0x40h KB = 64KB = 0x10000h
+    ; IF YOU WANT BIGGER KERNEL, LOAD DISK IN A LOOP, EACH TIME 64KB, BX can be used as counter
     mov cx, 0x0080
 
     call disk_load
 
+    sub bx, 1
+    add dx, 0x10000
+
+    jmp LOAD_64KB
+
+LOAD_DONE:
     call switch_to_pm
     jmp $ ; this will actually never be executed
 

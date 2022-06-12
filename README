@@ -14,3 +14,16 @@ make test:
 
 make img:
     build os.img from bootloader and kernel code
+
+# Kernel code size tip
+
+## image size
+In real mode, we load our kernel code from disk. The disk size is determined in
+Makefile, when we use `dd if=/dev/zero of=os.img bs=512 count=X`. The disk size
+is (X/2) KiB
+
+## kernel code size
+In boot.S's real mode sector, we use a loop to load kernel(and 2 sector of 
+bootloader) from disk, 64KiB each time. The counter is in bx. The total size
+of bootloader and kernel **COULD** be (1 + bx * (64KiB)).
+e.g. bx=4, allows us to have 257 KiB of code (257 - 1.5) KiB of kernel code.
