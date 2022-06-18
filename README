@@ -30,6 +30,7 @@ e.g. bx=4, allows us to have 257 KiB of code (257 - 1.5) KiB of kernel code.
 
 # Roadmap
 [x] bootloader
+[x] jump to C kernel
 [x] bigger kernel
 [x] VGA and uart
 [] keyboard interrupt
