@@ -27,3 +27,17 @@ In boot.S's real mode sector, we use a loop to load kernel(and 2 sector of
 bootloader) from disk, 64KiB each time. The counter is in bx. The total size
 of bootloader and kernel **COULD** be (1 + bx * (64KiB)).
 e.g. bx=4, allows us to have 257 KiB of code (257 - 1.5) KiB of kernel code.
+
+# Roadmap
+[x] bootloader
+[x] bigger kernel
+[x] VGA and uart
+[] keyboard interrupt
+[] timer interrupt
+[] change preset pagetable in kernel
+[] kernel pagetable in C
+[] kernel memory allocation
+[] scheduling
+[] user process
+[] trap
+
