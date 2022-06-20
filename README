@@ -33,7 +33,8 @@ e.g. bx=4, allows us to have 257 KiB of code (257 - 1.5) KiB of kernel code.
 [x] jump to C kernel
 [x] bigger kernel
 [x] VGA and uart
-[] setup idt
+[x] setup idt
+   - [] sample breakpoint interrupt
    - [] keyboard interrupt
    - [] timer interrupt
 [] change preset pagetable in kernel
