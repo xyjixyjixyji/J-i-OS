@@ -120,6 +120,13 @@ isr_install()
     asm volatile("sti"); // interrupts are enabled from this point
 }
 
+void
+idt_init()
+{
+    isr_install();
+}
+
+// called from isr_wrap.S, by isr_common
 // a naive handler for now, will use intr_nr to multiplex to other C functions
 void
 isr_handler(reg_ctx ctx)

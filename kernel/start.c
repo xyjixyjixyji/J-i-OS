@@ -11,4 +11,5 @@ _start()
 
     uart_init();
     uart_putstr(info);
+    idt_init();    
 }

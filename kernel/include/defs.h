@@ -31,6 +31,7 @@ void uart_putstr(const char*);
 void idt_load();
 void set_idt_gate(u8, u64);
 void isr_install();
+void idt_initidt_init();
 void isr_handler(reg_ctx);
 
 // utils
