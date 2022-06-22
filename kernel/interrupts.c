@@ -126,14 +126,31 @@ idt_init()
     isr_install();
 }
 
+void
+doublefault_handler()
+{
+    VGA_panic("panic(): double fault");
+}
+
 // called from isr_wrap.S, by isr_common
 // a naive handler for now, will use intr_nr to multiplex to other C functions
 void
 isr_handler(isf stackframe)
 {
-    VGA_putstr("\nReceived Interrupt: ", COLOR_WHITE, COLOR_RED);
-    const char *msg = exception_messages[stackframe.intr_nr];
-    VGA_putstr(msg, COLOR_WHITE, COLOR_RED);
+    switch (stackframe.intr_nr)
+    {
+    case 8:
+	{
+	    doublefault_handler();
+	    break;
+	}
+    default:
+	{
+	    const char *msg = exception_messages[stackframe.intr_nr];
+	    VGA_putstr(msg, COLOR_WHITE, COLOR_RED);
+	    break;
+	}
+    }
 }
 
 
