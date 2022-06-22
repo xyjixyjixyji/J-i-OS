@@ -129,10 +129,11 @@ idt_init()
 // called from isr_wrap.S, by isr_common
 // a naive handler for now, will use intr_nr to multiplex to other C functions
 void
-isr_handler(reg_ctx ctx)
+isr_handler(isf stackframe)
 {
     VGA_putstr("\nReceived Interrupt: ", COLOR_WHITE, COLOR_RED);
-    const char *msg = exception_messages[ctx.intr_nr];
+    const char *msg = exception_messages[stackframe.intr_nr];
     VGA_putstr(msg, COLOR_WHITE, COLOR_RED);
 }
+
 

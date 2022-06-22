@@ -37,7 +37,7 @@ typedef struct __attribute__((packed)) {
     u64 rdi, rsi, rbp, rsp, rdx, rcx, rbx, rax;
     u64 intr_nr, err_code;
     u64 rip, cs, eflags, user_esp, ss;
-} reg_ctx;
+} isf;
 
 // called by C function, actually code is in isr_wrap.S
 extern void isr_0();
