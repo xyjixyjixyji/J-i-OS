@@ -2,6 +2,7 @@
 #define __DEFS_H
 
 #include "types.h"
+#include "interrupts.h"
 
 // VGA.c
 void VGA_clear(const u8, const u8);
@@ -25,6 +26,12 @@ void exitvm(u32);
 // uart.c
 void uart_init();
 void uart_putstr(const char*);
+
+// interrupts.c
+void idt_load();
+void set_idt_gate(u8, u64);
+void isr_install();
+void isr_handler(reg_ctx);
 
 // utils
 char* itoa(int, char*, unsigned);
