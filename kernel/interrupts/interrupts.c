@@ -1,7 +1,7 @@
-#include "include/types.h"
-#include "include/interrupts.h"
-#include "include/VGA.h"
-#include "include/defs.h"
+#include "../include/types.h"
+#include "../include/interrupts/interrupts.h"
+#include "../include/VGA.h"
+#include "../include/defs.h"
 
 // global variables, static lifetime
 idt_gate _IDT[NGATES];
@@ -116,14 +116,14 @@ isr_install()
     set_idt_gate(31, (u64) isr_31);
 
     idt_load();
-
-    asm volatile("sti"); // interrupts are enabled from this point
 }
 
 void
 idt_init()
 {
     isr_install();
+    // pic_remap();
+    asm volatile("sti"); // interrupts are enabled from this point
 }
 
 void
@@ -132,25 +132,19 @@ doublefault_handler()
     VGA_panic("panic(): double fault");
 }
 
+void
+keyboard_handler()
+{
+    VGA_putstr("KB", COLOR_WHITE, COLOR_RED);
+}
+
 // called from isr_wrap.S, by isr_common
 // a naive handler for now, will use intr_nr to multiplex to other C functions
 void
-isr_handler(isf stackframe)
+isr_handler(isf *stackframe)
 {
-    switch (stackframe.intr_nr)
-    {
-    case 8:
-	{
-	    doublefault_handler();
-	    break;
-	}
-    default:
-	{
-	    const char *msg = exception_messages[stackframe.intr_nr];
-	    VGA_putstr(msg, COLOR_WHITE, COLOR_RED);
-	    break;
-	}
-    }
+    const char *msg = exception_messages[stackframe->intr_nr];
+    VGA_putstr(msg, COLOR_WHITE, COLOR_RED);
 }
 
 

@@ -18,11 +18,12 @@ qemu: img
 test: img
 	$(QEMU) $(QEMUTESTARGS)
 
+# dd if=/dev/zero of=os.img bs=512 count=8192
+# dd if=boot/boot of=os.img bs=512 conv=notrunc
+# dd if=kernel/kernel of=os.img bs=512 seek=3 conv=notrunc
 img:
 	make -C $B && make -C $K
-	dd if=/dev/zero of=os.img bs=512 count=8192
-	dd if=boot/boot of=os.img bs=512 conv=notrunc
-	dd if=kernel/kernel of=os.img bs=512 seek=3 conv=notrunc
+	cp $B/boot ./os.img && cat $K/kernel >> os.img
 
 BYTESZ=$(shell wc -c < os.img)
 sz:

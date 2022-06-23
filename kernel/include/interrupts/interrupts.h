@@ -1,7 +1,7 @@
 #ifndef __INTERRUPTS_H
 #define __INTERRUPTS_H
 
-#include "types.h"
+#include "../types.h"
 
 #define KERNEL_CS_SEL	0x08	// 0x0000 1000 => index 1 in gdt => Code Segment
 #define INTR_ATTR	0x8E	// INTERRUPT ATTR
@@ -36,7 +36,7 @@ typedef struct __attribute__((packed)) {
     u64 ds;
     u64 rdi, rsi, rbp, rsp, rdx, rcx, rbx, rax;
     u64 intr_nr, err_code;
-    u64 rip, cs, eflags, user_esp, ss;
+    u64 rip, cs, eflags, user_rsp, ss;
 } isf;
 
 // called by C function, actually code is in isr_wrap.S

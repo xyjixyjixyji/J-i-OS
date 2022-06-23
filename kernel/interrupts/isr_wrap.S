@@ -96,8 +96,12 @@ isr_common:
     mov fs, ax
     mov gs, ax
 
+    push rsp
+
     ; Call the isr handler
     call isr_handler
+
+    pop rax
 
     pop rax
     mov ds, ax

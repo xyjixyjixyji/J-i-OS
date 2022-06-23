@@ -19,7 +19,7 @@
 #define COLOR_DK_GRAY   COLOR_BLK       & 0xF
 #define COLOR_LT_BLUE   COLOR_BLUE      & 0xF
 #define COLOR_LT_GREEN  COLOR_GREEN     & 0xF
-#define COLOR_LT_RED    COLOR_READ      & 0xF
+#define COLOR_LT_RED    COLOR_RED       & 0xF
 #define COLOR_LT_PURPLE COLOR_PURPLE    & 0xF
 #define COLOR_YELLOW    COLOR_BROWN     & 0xF
 #define COLOR_WHITE     COLOR_GRAY      & 0xF

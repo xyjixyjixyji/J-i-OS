@@ -43,9 +43,9 @@ void
 VGA_putstr(const char *str, const u8 fg, const u8 bg)
 {
     while(*str) {
-	VGA_putc(*str, fg, bg);
-	str++;
-	advance_cpos();
+        VGA_putc(*str, fg, bg);
+        str++;
+        advance_cpos();
     }
 }
 
