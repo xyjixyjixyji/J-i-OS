@@ -54,7 +54,7 @@ VGA_putint(const int n, int radix)
 {
     char str[32];
     itoa(n, str, radix);
-    VGA_putstr(str, COLOR_RED, COLOR_BLK);
+    VGA_putstr(str, COLOR_WHITE, COLOR_RED);
 }
 
 void

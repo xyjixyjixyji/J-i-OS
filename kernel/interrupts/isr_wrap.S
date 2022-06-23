@@ -76,10 +76,11 @@ ISR_NOERRCODE 28
 ISR_NOERRCODE 29
 ISR_NOERRCODE 30
 ISR_NOERRCODE 31
+ISR_NOERRCODE 32 ; timer
+ISR_NOERRCODE 33 ; timer
 
 ; Load the interrupt handler
 [extern isr_handler]
-
 
 ; ISR common stub which all routines jump back to
 isr_common:
@@ -96,12 +97,12 @@ isr_common:
     mov fs, ax
     mov gs, ax
 
-    push rsp
+    ; push rsp
 
     ; Call the isr handler
     call isr_handler
 
-    pop rax
+    ; pop rax
 
     pop rax
     mov ds, ax
@@ -110,7 +111,7 @@ isr_common:
     mov gs, ax
     POPALL
 
-    add rsp, 8          ; Removes the pushed error code and ISR number
+    add rsp, 16          ; Removes the pushed error code and ISR number
     sti
     iretq
 

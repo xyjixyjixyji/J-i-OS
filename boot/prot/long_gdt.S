@@ -33,13 +33,14 @@ gdt_64_code:      ; entry for code section
     ;   32-bit Default: 0
     ;   64-bit Segment: 1
     ;   AVL:            0
+    dq (1<<44) | (1<<47) | (1<<41) | (1<<43) | (1<<53)
 
-    dw 0xffff           ; Limit (bits 0-15)
-    dw 0x0              ; Base  (bits 0-15)
-    db 0x0              ; Base  (bits 16-23)
-    db 10011010b        ; 1st Flags, Type flags
-    db 10101111b        ; 2nd Flags, Limit (bits 16-19)
-    db 0x0              ; Base  (bits 24-31)
+    ; dw 0xffff           ; Limit (bits 0-15)
+    ; dw 0x0              ; Base  (bits 0-15)
+    ; db 0x0              ; Base  (bits 16-23)
+    ; db 10011010b        ; 1st Flags, Type flags
+    ; db 10101111b        ; 2nd Flags, Limit (bits 16-19)
+    ; db 0x0              ; Base  (bits 24-31)
 
     ; Base:     0x00000
     ; Limit:    0x00000
@@ -59,12 +60,13 @@ gdt_64_code:      ; entry for code section
     ;   AVL:            0
 
 gdt_64_data:
-    dw 0x0
-    dw 0x0
-    db 0x0
-    db 10010010b
-    db 10101111b
-    db 0x0
+    ; dw 0xffff
+    ; dw 0x0
+    ; db 0x0
+    ; db 10010010b
+    ; db 10101111b
+    ; db 0x0
+    dq (1<<44) | (1<<47) | (1<<41)
 
 gdt_64_end:
 

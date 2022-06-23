@@ -22,6 +22,7 @@ test: img
 # dd if=boot/boot of=os.img bs=512 conv=notrunc
 # dd if=kernel/kernel of=os.img bs=512 seek=3 conv=notrunc
 img:
+	make clean
 	make -C $B && make -C $K
 	cp $B/boot ./os.img && cat $K/kernel >> os.img
 

@@ -45,5 +45,6 @@ void
 end_interrupt()
 {
     w_port(MPIC_CMD, PIC_EOI);
+    io_wait();
     w_port(SPIC_CMD, PIC_EOI);
 }

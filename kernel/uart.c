@@ -40,7 +40,7 @@ uart_init()
     WriteReg(uart0.modem, 0x1E);
     WriteReg(uart0.data, 0xAE);
     if(ReadReg(uart0.data) != 0xAE) {
-	VGA_panic("not the same byte as sent");
+	    VGA_panic("not the same byte as sent");
     }
 
     // mark data terminal ready, singal request to send

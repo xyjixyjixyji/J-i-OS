@@ -32,7 +32,7 @@ void idt_load();
 void set_idt_gate(u8, u64);
 void isr_install();
 void idt_init();
-void isr_handler(isf*);
+void isr_handler(isf);
 
 // pic.c
 void pic_remap();

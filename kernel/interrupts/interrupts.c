@@ -1,5 +1,6 @@
 #include "../include/types.h"
 #include "../include/interrupts/interrupts.h"
+#include "../include/interrupts/pic.h"
 #include "../include/VGA.h"
 #include "../include/defs.h"
 
@@ -10,8 +11,8 @@ idt_descriptor _IDT_DESCRIPTOR;
 // See
 // https://www.amd.com/system/files/TechDocs/24593.pdf
 char *exception_messages[] = {
-    "Division by Zero",
-    "Debug",
+    "Division by Zero\n",
+    "Debug\n",
     "Non-Maskable Interrupt",
     "Breakpoint",
     "Overflow",
@@ -115,6 +116,9 @@ isr_install()
     set_idt_gate(30, (u64) isr_30);
     set_idt_gate(31, (u64) isr_31);
 
+    w_port(MPIC_DATA, 0xfd);
+    w_port(SPIC_DATA, 0xff);
+
     idt_load();
 }
 
@@ -124,6 +128,7 @@ idt_init()
     isr_install();
     // pic_remap();
     asm volatile("sti"); // interrupts are enabled from this point
+    VGA_putstr("INTERRUPT ENABLED\n", COLOR_BLUE, COLOR_WHITE);
 }
 
 void
@@ -141,10 +146,12 @@ keyboard_handler()
 // called from isr_wrap.S, by isr_common
 // a naive handler for now, will use intr_nr to multiplex to other C functions
 void
-isr_handler(isf *stackframe)
+isr_handler(isf sf)
 {
-    const char *msg = exception_messages[stackframe->intr_nr];
+    const char *msg = exception_messages[sf.intr_nr];
     VGA_putstr(msg, COLOR_WHITE, COLOR_RED);
+    VGA_putstr("Errorcode: ", COLOR_WHITE, COLOR_RED);
+    VGA_putint(sf.err_code, 16);
+    VGA_putc('\n', COLOR_BLK, COLOR_BLUE);
 }
-
 
