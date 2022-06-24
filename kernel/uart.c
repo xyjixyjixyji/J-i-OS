@@ -40,7 +40,7 @@ uart_init()
     WriteReg(uart0.modem, 0x1E);
     WriteReg(uart0.data, 0xAE);
     if(ReadReg(uart0.data) != 0xAE) {
-	    VGA_panic("not the same byte as sent");
+	    // VGA_panic("not the same byte as sent");
     }
 
     // mark data terminal ready, singal request to send
@@ -57,35 +57,27 @@ uart_lstat()
     return ReadReg(uart0.line_stat);
 }
 
-// debug use
-static void
-uart_print_lstat()
-{
-    int stat = (int)uart_lstat();
-    VGA_putint(stat, 0x02);
-}
-
 static void
 uart_sendc(u8 rb)
 {
     // BS, del
     if (rb == 8 || rb == 0x7f){
-	WAITFOR(uart_lstat() & OUTPUT_EMPTY);
-	WriteReg(uart0.data, 8);
+        WAITFOR(uart_lstat() & OUTPUT_EMPTY);
+        WriteReg(uart0.data, 8);
 
-	WAITFOR(uart_lstat() & OUTPUT_EMPTY);
-	WriteReg(uart0.data, (u8)' ');
+        WAITFOR(uart_lstat() & OUTPUT_EMPTY);
+        WriteReg(uart0.data, (u8)' ');
 
-	WAITFOR(uart_lstat() & OUTPUT_EMPTY);
-	WriteReg(uart0.data, 8);
+        WAITFOR(uart_lstat() & OUTPUT_EMPTY);
+        WriteReg(uart0.data, 8);
 
         return;
     }
     WAITFOR(uart_lstat() & OUTPUT_EMPTY);
     WriteReg(uart0.data, rb);
-    if (!(uart_lstat() & OUTPUT_EMPTY)) {
-	VGA_putint(123, 10);
-    }
+    // if (!(uart_lstat() & OUTPUT_EMPTY)) {
+	//     VGA_putint(123, 10);
+    // }
 }
 
 void
@@ -95,4 +87,12 @@ uart_putstr(const char* s)
         uart_sendc(*s);
         s++;
     }
+}
+
+void
+uart_putc(int n, int radix)
+{
+    char str[32];
+    itoa(n, str, radix);
+    uart_putstr(str);
 }

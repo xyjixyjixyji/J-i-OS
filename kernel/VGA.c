@@ -1,134 +1,60 @@
 #include "include/defs.h"
-#include "include/VGA.h"
 #include "include/types.h"
+#include "include/VGA.h"
 
-volatile vga_char *VGA_BUFFER = (vga_char*) VGA_START;
+volatile vga_writer writer = {
+    .pos_c = 0,
+    .color = ((u8)COLOR_BLK << 4) | ((u8)COLOR_GREEN & 0xFF),
+    .buf = (vga_char*) VGA_START,
+};
 
-u8
-VGA_color(const u8 fg, const u8 bg)
+static inline u8
+vga_color(const u8 fg, const u8 bg)
 {
     return (bg << 4) | (fg & 0xF);
 }
 
-void
-VGA_clear(const u8 fg, const u8 bg)
+static inline u64
+rc2idx(const int r, const int c)
 {
-    int i;
-    vga_char space;
-    space.ch=' ';
-    space.color=VGA_color(fg, bg);
+    return r * VGA_WIDTH + c;
+}
 
-    for(i = 0; i < VGA_SIZE; i++){
-        VGA_BUFFER[i] = space;
+static void
+vga_clearrow(u64 row)
+{
+    vga_char blank = {
+        .ch = ' ',
+        .color = writer.color,
+    };
+    for(int i = 0; i < VGA_WIDTH; i++){
+        writer.buf[rc2idx(row, i)] = blank;
     }
 }
 
 void
-VGA_putc(const char ch, const u8 fg, const u8 bg)
+vga_clear()
 {
-    vga_char c;
-    c.ch = ch;
-    c.color = VGA_color(fg, bg);
-
-    u16 cpos = get_cpos();
-    if (ch == '\n') {
-        set_cpos(0, (u8)(cpos / VGA_WIDTH + 1));
-        return;
-    }
-
-    VGA_BUFFER[cpos] = c;
-}
-
-void
-VGA_newline()
-{
-    VGA_putc('\n', COLOR_BLK, COLOR_BLK);
-}
-
-void
-VGA_putstr(const char *str, const u8 fg, const u8 bg)
-{
-    while(*str) {
-        VGA_putc(*str, fg, bg);
-        str++;
-        advance_cpos();
+    for(int i = 0; i < VGA_HEIGHT; i++){
+        vga_clearrow(i);
     }
 }
 
-void
-VGA_putint(const int n, int radix)
+// erase last line, move every line upwards
+static void
+vga_newline()
 {
-    char str[32];
-    itoa(n, str, radix);
-    VGA_putstr(str, COLOR_WHITE, COLOR_RED);
-}
-
-void
-VGA_panic(const char* str)
-{
-    VGA_putstr(str, COLOR_RED, COLOR_BLK);
-    while(1)
-	;
-}
-
-u16
-get_cpos()
-{
-    u16 cpos = 0;
-    w_port(CURSOR_PORT_CMD, 0x0F);
-    cpos |= r_port(CURSOR_PORT_DATA);
-
-    w_port(CURSOR_PORT_CMD, 0x0E);
-    cpos |= r_port(CURSOR_PORT_DATA) << 8;
-
-    return cpos;
-}
-
-void
-advance_cpos()
-{
-    u16 cpos = get_cpos();
-    cpos++;
-
-    if (cpos >= VGA_SIZE) {
-	    cpos = VGA_SIZE - 1;
+    for(int i = 1; i < VGA_HEIGHT; i++){
+        for(int j = 0; j < VGA_WIDTH; j++){
+            writer.buf[rc2idx(i - 1, j)] = writer.buf[rc2idx(i, j)];
+        }
     }
-
-    w_port(CURSOR_PORT_CMD, 0x0F);
-    w_port(CURSOR_PORT_DATA, (u8)(cpos & 0xFF)); // first byte
-    w_port(CURSOR_PORT_CMD, 0x0E);
-    w_port(CURSOR_PORT_DATA, (u8)((cpos >> 8) & 0xFF)); // second byte
+    vga_clearrow(VGA_HEIGHT - 1);
+    writer.pos_c = 0;
 }
 
-void
-set_cpos(u8 x, u8 y)
-{
-    u16 pos = (y * (u16)VGA_WIDTH) + x;
-    if (pos >= VGA_SIZE) {
-	    pos = VGA_SIZE - 1;
-    }
-
-    w_port(CURSOR_PORT_CMD, 0x0F);
-    w_port(CURSOR_PORT_DATA, (u8)(pos & 0xFF)); // first byte
-    w_port(CURSOR_PORT_CMD, 0x0E);
-    w_port(CURSOR_PORT_DATA, (u8)((pos >> 8) & 0xFF)); // second byte
-}
-
-//
-// we assume that cursor_start = cursor_end = 0
-//
-void
-show_cursor()
-{
-    w_port(CURSOR_PORT_CMD, 0x0A);
-    w_port(CURSOR_PORT_DATA, (r_port(CURSOR_PORT_DATA) & 0xC0) | 0);
-
-    w_port(CURSOR_PORT_CMD, 0x0B);
-    w_port(CURSOR_PORT_DATA, (r_port(CURSOR_PORT_DATA) & 0xE0) | 0);
-}
-
-void
-hide_cursor()
+static void
+vga_hidecursor()
 {
     w_port(CURSOR_PORT_CMD, 0x0A);
     w_port(CURSOR_PORT_DATA, 0x20);
@@ -137,6 +63,51 @@ hide_cursor()
 void
 vga_init()
 {
-    set_cpos(0, 0);
-    VGA_clear(COLOR_GREEN, COLOR_BLK);
+    vga_clear();
+    vga_hidecursor();
+}
+
+void
+vga_putc(const char ch)
+{
+    switch(ch){
+        case '\n':{
+            vga_newline();
+            break;
+        }
+        case '\r':{
+
+        }
+        case '\b':{
+
+        }
+        case '\t':{
+
+        }
+        default:{
+            if(writer.pos_c >= VGA_WIDTH){
+                vga_newline();
+            }
+
+            vga_char vc = {
+                .ch = ch,
+                .color = writer.color,
+            };
+
+            u64 row = VGA_HEIGHT - 1;            
+            u64 col = writer.pos_c;
+            writer.buf[row * VGA_WIDTH + col] = vc;
+
+            ++writer.pos_c;
+        }
+    }
+}
+
+void
+vga_putstr(const char *str)
+{
+    while(*str){
+        vga_putc(*str);
+        str++;
+    }
 }

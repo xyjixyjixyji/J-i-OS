@@ -4,19 +4,11 @@
 #include "types.h"
 #include "interrupts/isr.h"
 
-// VGA.c
-void VGA_clear(const u8, const u8);
-void VGA_putc(const char, const u8, const u8);
-void VGA_putstr(const char*, const u8, const u8);
-void VGA_putint(const int, int);
-void VGA_panic(const char*);
-void VGA_newline();
-u16  get_cpos();
-void set_cpos(u8, u8);
-void show_cursor();
-void hide_cursor();
-void advance_cpos();
+// vga.c
 void vga_init();
+void vga_clear();
+void vga_putc(const char);
+void vga_putstr(const char*);
 
 // port.c
 u8 r_port(u16);
@@ -28,6 +20,7 @@ void exitvm(u32);
 // uart.c
 void uart_init();
 void uart_putstr(const char*);
+void uart_putint(int, int);
 
 // idt.c
 void idt_load();

@@ -47,6 +47,7 @@ end_interrupt(u8 irq)
         w_port(MPIC_CMD, PIC_EOI);
     else if(irq >= SPIC_OFF && irq < SPIC_OFF+8)
         w_port(SPIC_CMD, PIC_EOI);
-    else
-        VGA_panic("panic(): unknown irq");
+    else{
+        // VGA_panic("panic(): unknown irq");
+    }
 }

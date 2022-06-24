@@ -6,7 +6,7 @@
 #define VGA_START  0xb8000
 #define VGA_WIDTH  80
 #define VGA_HEIGHT 25
-#define VGA_SIZE   VGA_WIDTH * VGA_HEIGHT
+#define VGA_SIZE   (VGA_WIDTH * VGA_HEIGHT)
 
 #define COLOR_BLK       0
 #define COLOR_BLUE      1
@@ -31,5 +31,11 @@ typedef struct __attribute__((packed)) {
     char ch;
     char color;
 } vga_char;
+
+typedef struct {
+    u64 pos_c;       // column position
+    u8 color;        // tty color code
+    vga_char* buf;   // buffer ptr
+} vga_writer;
 
 #endif

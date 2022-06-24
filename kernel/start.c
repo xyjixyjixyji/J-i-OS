@@ -4,11 +4,10 @@
 void
 _start()
 {
-    vga_init();
     uart_init();
     idt_init();
+    vga_init();
 
-    const char *info = "Kernel booted with a better VGA buffer...\n";
-    VGA_putstr(info, COLOR_GREEN, COLOR_BLK);
-
+    const char *info = "\nKernel booted with a better VGA buffer...";
+    vga_putstr(info);
 }

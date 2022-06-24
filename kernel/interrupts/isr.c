@@ -11,48 +11,48 @@ void (*isr_funcs[NINTRS])(); // function ptr to handlers
 char *exception_messages[] = {
     "Division by Zero\n",
     "Debug\n",
-    "Non-Maskable Interrupt",
-    "Breakpoint",
-    "Overflow",
-    "Out of Bounds",
-    "Invalid Opcode",
-    "No Coprocessor",
+    "Non-Maskable Interrupt\n",
+    "Breakpoint\n",
+    "Overflow\n",
+    "Out of Bounds\n",
+    "Invalid Opcode\n",
+    "No Coprocessor\n",
 
-    "Double Fault",
-    "Coprocessor Segment Overrun",
-    "Bat TSS",
-    "Segment not Present",
-    "Stack Fault",
-    "General Protection Fault",
-    "Page Fault",
-    "Unknown Interrupt",
+    "Double Fault\n",
+    "Coprocessor Segment Overrun\n",
+    "Bat TSS\n",
+    "Segment not Present\n",
+    "Stack Fault\n",
+    "General Protection Fault\n",
+    "Page Fault\n",
+    "Unknown Interrupt\n",
 
-    "Coprocessor Fault",
-    "Alignment Check",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
+    "Coprocessor Fault\n",
+    "Alignment Check\n",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
 
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
+    "Reserved\n",
 
-    "Timer",
-    "Keyboard",
+    "Timer\n",
+    "Keyboard\n",
 };
 
 void
 doublefault_handler()
 {
-    VGA_panic("panic(): double fault");
+    // VGA_panic("panic(): double fault");
 }
 
 void
@@ -64,7 +64,9 @@ timer_handler()
 void
 keyboard_handler()
 {
-    VGA_putstr("KB", COLOR_WHITE, COLOR_RED);
+    const u8 n = r_port(0x60);
+    // VGA_putint(n, 16);
+    end_interrupt(IRQ_KB);
 }
 
 void
@@ -80,10 +82,10 @@ isr_registry()
 void
 irq_handler(isf sf)
 {
-    const char *msg = exception_messages[sf.intr_nr];
-    VGA_putstr(msg, COLOR_WHITE, COLOR_RED);
-    VGA_newline();
-
     if(isr_funcs[sf.intr_nr])
         isr_funcs[sf.intr_nr]();
+    else{
+        const char *msg = exception_messages[sf.intr_nr];
+        vga_putstr(msg);
+    }
 }
