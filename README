@@ -1,5 +1,5 @@
-# JOS
-An operating system from scratch
+# J(i)OS
+A 64 bit, amd64 compatible operating system from scratch.
 
 # Directory
 boot -> bootloader, from real mode -> protected mode -> long mode (heavily borrowed from osdev.org)
