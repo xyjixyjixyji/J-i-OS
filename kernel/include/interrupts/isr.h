@@ -1,29 +1,9 @@
-#ifndef __INTERRUPTS_H
-#define __INTERRUPTS_H
+#ifndef __ISR_H
+#define __ISR_H
 
 #include "../types.h"
 
-#define KERNEL_CS_SEL	0x08	// 0x0000 1000 => index 1 in gdt => Code Segment
-#define INTR_ATTR	0x8E	// INTERRUPT ATTR
-#define NGATES		256	// # of entries in idt
-
-typedef struct __attribute__((packed)) {
-    u16 off_lo;
-    u16 cs_sel;
-    u8  ist;
-    u8  attr;
-    u16 off_mid;
-    u32 off_hi;
-    u32 reserved;
-} idt_gate;
-
-typedef struct __attribute__((packed)) {
-    u16 sz;
-    u64 off;
-} idt_descriptor;
-
-extern idt_gate _IDT[NGATES];
-extern idt_descriptor _IDT_DESCRIPTOR;
+#define NINTRS          64      // # of interrupt handlers
 
 //
 // ISRs
@@ -72,5 +52,12 @@ extern void isr_28();
 extern void isr_29();
 extern void isr_30();
 extern void isr_31();
+
+extern void isr_32(); // controlled by PIC, timer
+extern void isr_33(); // controlled by PIC, keyboard
+
+#define IRQ_DOUBLEFAULT 8
+#define IRQ_TIMER       32
+#define IRQ_KB          IRQ_TIMER + 1
 
 #endif

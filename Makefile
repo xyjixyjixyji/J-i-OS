@@ -35,5 +35,7 @@ lldb:
     lldb -ex "target remote localhost:1234" -ex "symbol-file kernel/kernel.elf"
 
 clean:
-	rm -rf */.o $K/*.o $K/*.elf $K/kernel $B/boot *.img
+	find . -name "*.o"  | xargs rm -f
+	find . -name "*.elf"  | xargs rm -f
+	rm -rf $K/kernel $B/boot *.img
 

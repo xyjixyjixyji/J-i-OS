@@ -2,7 +2,7 @@
 #define __DEFS_H
 
 #include "types.h"
-#include "interrupts/interrupts.h"
+#include "interrupts/isr.h"
 
 // VGA.c
 void VGA_clear(const u8, const u8);

@@ -1,5 +1,5 @@
 #include "../include/types.h"
-#include "../include/interrupts/interrupts.h"
+#include "../include/interrupts/idt.h"
 #include "../include/interrupts/pic.h"
 #include "../include/VGA.h"
 #include "../include/defs.h"
@@ -7,45 +7,6 @@
 // global variables, static lifetime
 idt_gate _IDT[NGATES];
 idt_descriptor _IDT_DESCRIPTOR;
-
-// See
-// https://www.amd.com/system/files/TechDocs/24593.pdf
-char *exception_messages[] = {
-    "Division by Zero\n",
-    "Debug\n",
-    "Non-Maskable Interrupt",
-    "Breakpoint",
-    "Overflow",
-    "Out of Bounds",
-    "Invalid Opcode",
-    "No Coprocessor",
-
-    "Double Fault",
-    "Coprocessor Segment Overrun",
-    "Bat TSS",
-    "Segment not Present",
-    "Stack Fault",
-    "General Protection Fault",
-    "Page Fault",
-    "Unknown Interrupt",
-
-    "Coprocessor Fault",
-    "Alignment Check",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved"
-};
 
 // load the IDT, but interrupts are not enabled
 // interrupts are enabled after ISR are loaded into IDT
@@ -116,6 +77,7 @@ isr_install()
     set_idt_gate(30, (u64) isr_30);
     set_idt_gate(31, (u64) isr_31);
 
+    // setup PIC masks
     w_port(MPIC_DATA, 0xfd); // 0b 1111 1101, only IRQ1 can happen
     w_port(SPIC_DATA, 0xff); // 0b 1111 1111
 
@@ -130,28 +92,3 @@ idt_init()
     asm volatile("sti"); // interrupts are enabled from this point
     VGA_putstr("INTERRUPT ENABLED\n", COLOR_BLUE, COLOR_WHITE);
 }
-
-void
-doublefault_handler()
-{
-    VGA_panic("panic(): double fault");
-}
-
-void
-keyboard_handler()
-{
-    VGA_putstr("KB", COLOR_WHITE, COLOR_RED);
-}
-
-// called from isr_wrap.S, by isr_common
-// a naive handler for now, will use intr_nr to multiplex to other C functions
-void
-isr_handler(isf sf)
-{
-    const char *msg = exception_messages[sf.intr_nr];
-    VGA_putstr(msg, COLOR_WHITE, COLOR_RED);
-    VGA_putstr("Errorcode: ", COLOR_WHITE, COLOR_RED);
-    VGA_putint(sf.err_code, 16);
-    VGA_putc('\n', COLOR_BLK, COLOR_BLUE);
-}
-
