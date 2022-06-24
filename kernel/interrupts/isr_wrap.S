@@ -29,7 +29,6 @@
 %macro ISR_NOERRCODE 1
   global isr_%1
   isr_%1:
-    cli
     push byte 0
     push byte %1
     jmp isr_common
@@ -38,7 +37,6 @@
 %macro ISR_ERRCODE 1
   global isr_%1
   isr_%1:
-    cli
     push byte %1
     jmp isr_common
 %endmacro
@@ -61,11 +59,11 @@ ISR_ERRCODE   13
 ISR_ERRCODE   14
 ISR_NOERRCODE 15
 ISR_NOERRCODE 16
-ISR_NOERRCODE 17
+ISR_ERRCODE 17
 ISR_NOERRCODE 18
 ISR_NOERRCODE 19
 ISR_NOERRCODE 20
-ISR_NOERRCODE 21
+ISR_ERRCODE 21
 ISR_NOERRCODE 22
 ISR_NOERRCODE 23
 ISR_NOERRCODE 24
@@ -76,11 +74,12 @@ ISR_NOERRCODE 28
 ISR_NOERRCODE 29
 ISR_NOERRCODE 30
 ISR_NOERRCODE 31
+
 ISR_NOERRCODE 32 ; timer
-ISR_NOERRCODE 33 ; timer
+ISR_NOERRCODE 33 ; keyboard
 
 ; Load the interrupt handler
-[extern isr_handler]
+[extern irq_handler]
 
 ; ISR common stub which all routines jump back to
 isr_common:
@@ -99,8 +98,8 @@ isr_common:
 
     ; push rsp
 
-    ; Call the isr handler
-    call isr_handler
+    ; Call the irq handler
+    call irq_handler
 
     ; pop rax
 
@@ -112,6 +111,5 @@ isr_common:
     POPALL
 
     add rsp, 16          ; Removes the pushed error code and ISR number
-    sti
     iretq
 

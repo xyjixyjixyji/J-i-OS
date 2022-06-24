@@ -40,11 +40,13 @@ pic_remap()
 	w_port(SPIC_DATA, m2);
 }
 
-// TODO: add argument to only end one PIC
 void
-end_interrupt()
+end_interrupt(u8 irq)
 {
-    w_port(MPIC_CMD, PIC_EOI);
-    io_wait();
-    w_port(SPIC_CMD, PIC_EOI);
+    if(irq >= MPIC_OFF && irq < SPIC_OFF)
+        w_port(MPIC_CMD, PIC_EOI);
+    else if(irq >= SPIC_OFF && irq < SPIC_OFF+8)
+        w_port(SPIC_CMD, PIC_EOI);
+    else
+        VGA_panic("panic(): unknown irq");
 }

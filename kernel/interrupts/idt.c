@@ -77,6 +77,9 @@ isr_install()
     set_idt_gate(30, (u64) isr_30);
     set_idt_gate(31, (u64) isr_31);
 
+    set_idt_gate(32, (u64) isr_32);
+    set_idt_gate(33, (u64) isr_33);
+
     // setup PIC masks
     w_port(MPIC_DATA, 0xfd); // 0b 1111 1101, only IRQ1 can happen
     w_port(SPIC_DATA, 0xff); // 0b 1111 1111
@@ -87,8 +90,8 @@ isr_install()
 void
 idt_init()
 {
-    isr_install();
-    pic_remap();
+    isr_install();       // install isr
+    pic_remap();         // remap IRQs handled by PICs
+    isr_registry();      // register handlers to function pointer array
     asm volatile("sti"); // interrupts are enabled from this point
-    VGA_putstr("INTERRUPT ENABLED\n", COLOR_BLUE, COLOR_WHITE);
 }

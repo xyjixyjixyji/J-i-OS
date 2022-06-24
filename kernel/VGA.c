@@ -40,6 +40,12 @@ VGA_putc(const char ch, const u8 fg, const u8 bg)
 }
 
 void
+VGA_newline()
+{
+    VGA_putc('\n', COLOR_BLK, COLOR_BLK);
+}
+
+void
 VGA_putstr(const char *str, const u8 fg, const u8 bg)
 {
     while(*str) {
@@ -78,7 +84,8 @@ get_cpos()
     return cpos;
 }
 
-void advance_cpos()
+void
+advance_cpos()
 {
     u16 cpos = get_cpos();
     cpos++;
@@ -120,8 +127,16 @@ show_cursor()
     w_port(CURSOR_PORT_DATA, (r_port(CURSOR_PORT_DATA) & 0xE0) | 0);
 }
 
-void hide_cursor()
+void
+hide_cursor()
 {
     w_port(CURSOR_PORT_CMD, 0x0A);
     w_port(CURSOR_PORT_DATA, 0x20);
+}
+
+void
+vga_init()
+{
+    set_cpos(0, 0);
+    VGA_clear(COLOR_GREEN, COLOR_BLK);
 }
