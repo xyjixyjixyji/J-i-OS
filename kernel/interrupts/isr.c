@@ -55,17 +55,20 @@ doublefault_handler()
     // VGA_panic("panic(): double fault");
 }
 
+// TODO: figure out why timer is not interrupting
+// probably because of the pic mask
 void
 timer_handler()
 {
-
+    vga_putc('.');
+    end_interrupt(IRQ_TIMER);
 }
 
 void
 keyboard_handler()
 {
-    const u8 n = r_port(0x60);
-    // VGA_putint(n, 16);
+    const u8 n = r_port(0x60); // TODO: translate n to char
+    vga_putc('.');
     end_interrupt(IRQ_KB);
 }
 

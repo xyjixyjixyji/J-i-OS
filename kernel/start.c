@@ -1,5 +1,4 @@
 #include "include/defs.h"
-#include "include/VGA.h"
 
 void
 _start()

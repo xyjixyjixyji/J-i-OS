@@ -81,7 +81,7 @@ isr_install()
     set_idt_gate(33, (u64) isr_33);
 
     // setup PIC masks
-    w_port(MPIC_DATA, 0xfd); // 0b 1111 1101, only IRQ1 can happen
+    w_port(MPIC_DATA, 0xfc); //! 0b 1111 1100, only KB and TIMER can happen
     w_port(SPIC_DATA, 0xff); // 0b 1111 1111
 
     idt_load();
