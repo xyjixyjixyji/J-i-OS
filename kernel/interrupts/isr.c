@@ -3,6 +3,7 @@
 #include "../include/interrupts/pic.h"
 #include "../include/VGA.h"
 #include "../include/defs.h"
+#include "../constants/kbScancode.h"
 
 void (*isr_funcs[NINTRS])(); // function ptr to handlers
 
@@ -55,20 +56,21 @@ doublefault_handler()
     // VGA_panic("panic(): double fault");
 }
 
-// TODO: figure out why timer is not interrupting
-// probably because of the pic mask
 void
 timer_handler()
 {
-    vga_putc('.');
+    // vga_putc('.');
     end_interrupt(IRQ_TIMER);
 }
 
 void
 keyboard_handler()
 {
-    const u8 n = r_port(0x60); // TODO: translate n to char
-    vga_putc('.');
+    const u8 n = r_port(0x60);
+    // do nothing on null ascii
+    if(kbsc[n])
+        vga_putc(kbsc[n]);
+
     end_interrupt(IRQ_KB);
 }
 
