@@ -51,8 +51,8 @@ The procedure is as follows.
 [x] setup idt
    - [x] sample breakpoint interrupt
    - [x] remap pic
-   - [] keyboard interrupt
-   - [] timer interrupt
+   - [x] keyboard interrupt
+   - [x] timer interrupt
 [] change preset pagetable in kernel
    - [] kernel pagetable in C
 [] kernel memory allocation
