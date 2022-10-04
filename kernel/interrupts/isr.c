@@ -3,7 +3,7 @@
 #include "../include/interrupts/pic.h"
 #include "../include/VGA.h"
 #include "../include/defs.h"
-#include "../constants/kbScancode.h"
+#include "../include/kbScancode.h"
 
 void (*isr_funcs[NINTRS])(); // function ptr to handlers
 

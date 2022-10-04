@@ -22,7 +22,7 @@
     ; es:dx = dest paddr
     mov dx, 0x7E00
 
-    mov cx, 20
+    mov cx, 100
 
     call disk_load
 

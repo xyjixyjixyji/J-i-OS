@@ -69,7 +69,7 @@ init_pgtbl_prot:
     ; we make identity mapping in PT, we do this by using loop
     ; ecx is used as counter
     mov ebx, 0x00000003 ; prot
-    mov ecx, 512        ; 512 entries
+    mov ecx, 512       ; 1024 entries
 
     add_pte_to_lv1:
         mov dword[edi], ebx
