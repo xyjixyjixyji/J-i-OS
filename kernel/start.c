@@ -1,5 +1,5 @@
 #include "include/defs.h"
-#include "include/exit.h"
+#include "include/logger.h"
 
 void init();
 
@@ -8,21 +8,20 @@ _start()
 {
     init();
 
-    const char *info = "\nKernel booted with a better VGA buffer...\n";
-    uart_printf(info);
-    uart_printf("I want %s dollars", "123");
+    LOG_INFO("Initialization Done. Entering J-i-OS");
 }
 
 void
 init()
 {
+    LOG_INFO("\n\nJ-i-OS Initializing...");
+
+    LOG_INFO("UART Initialzing...");
     uart_init();
+
+    LOG_INFO("IDT Initialzing...");
     idt_init();
+
+    LOG_INFO("VGA buffer Initializing...");
     vga_init();
-}
-
-void
-test()
-{
-
 }

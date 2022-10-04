@@ -1,6 +1,7 @@
 #ifndef __DEFS_H
 #define __DEFS_H
 
+#include "stdarg.h"
 #include "types.h"
 #include "interrupts/isr.h"
 
@@ -20,8 +21,9 @@ void exitvm(u32);
 
 // uart.c
 void uart_init();
-void uart_panic(const char*, ...);
+void uart_panic(const char*, va_list ap);
 void uart_printf(const char*, ...);
+void uart_vprintf(const char*, va_list ap);
 
 // idt.c
 void idt_load();
@@ -42,5 +44,8 @@ char* itoa(int, char*, unsigned);
 
 // vm.c
 u64 r_cr3();
+
+// panic.c
+void panic(const char*, ...);
 
 #endif

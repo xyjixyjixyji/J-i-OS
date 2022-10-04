@@ -8,7 +8,7 @@
 
 #define WAITFOR(cond) do {while(!(cond));} while(0)
 
-static void uart_vprintf(const char* fmt, va_list ap);
+void uart_vprintf(const char* fmt, va_list ap);
 
 static volatile srlport uart0 = {
     .data = (u16)UART0,
@@ -99,10 +99,8 @@ uart_putint(int n, int radix)
 }
 
 void
-uart_panic(const char* fmt, ...)
+uart_panic(const char* fmt, va_list ap)
 {
-    va_list ap;
-    va_start(ap, fmt);
     uart_vprintf(fmt, ap);
     while(1)
 	;
@@ -116,7 +114,7 @@ uart_printf(const char* fmt, ...)
   uart_vprintf(fmt, ap);
 }
 
-static void
+void
 uart_vprintf(const char* fmt, va_list ap)
 {
   char *s;

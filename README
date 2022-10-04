@@ -53,7 +53,9 @@ The procedure is as follows.
    - [x] remap pic
    - [x] keyboard interrupt
    - [x] timer interrupt
-[x] printf
+[x] logger
+   - [x] printf
+   - [x] logging w/ file name & line number
 [] switch kernel pgtbl when entered C
 [] kernel memory allocation
 [] process
