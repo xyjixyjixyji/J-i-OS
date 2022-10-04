@@ -1,14 +1,18 @@
+#include "include/defs.h"
 #include "include/types.h"
+#include "include/x64.h"
 
-u64
-r_cr3()
+// when init() is called, setup the kernel page table and prepare for jump
+pte_t*
+kvm_setup()
 {
-    u64 val;
-    asm volatile ("movq %%cr0, %0": "=r"(val));
-    return val;
+
 }
 
+// initialization of kernel virtual memory
 void
-w_cr3(u64 val)
+kvm_init()
 {
+    pte_t *dir = kvm_setup();
+    w_cr3(dir);
 }

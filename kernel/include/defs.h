@@ -42,9 +42,6 @@ void end_interrupt(u8);
 // utils.c
 char* itoa(int, char*, unsigned);
 
-// vm.c
-u64 r_cr3();
-
 // panic.c
 void panic(const char*, ...);
 

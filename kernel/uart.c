@@ -1,11 +1,13 @@
 #include "include/defs.h"
 #include "include/types.h"
 #include "include/uart.h"
+#include "include/logger.h"
 #include "stdarg.h"
+
+static char digits[] = "0123456789ABCDEF";
 
 #define WriteReg(reg, v) (w_port(reg, v))
 #define ReadReg(reg) (r_port(reg))
-
 #define WAITFOR(cond) do {while(!(cond));} while(0)
 
 void uart_vprintf(const char* fmt, va_list ap);
@@ -115,6 +117,17 @@ uart_printf(const char* fmt, ...)
 }
 
 void
+uart_printptr(u64 ptr)
+{
+  int i = 0;
+  for(i = 0; i < (sizeof(u64) * 2); i++, ptr <<= 4){
+    char ch = digits[ptr >> 60];
+    uart_sendc(ch);
+  }
+}
+
+// partially from xv6
+void
 uart_vprintf(const char* fmt, va_list ap)
 {
   char *s;
@@ -133,9 +146,12 @@ uart_vprintf(const char* fmt, va_list ap)
       if(c == 'd'){
         int d = va_arg(ap, int);
         uart_putint(d, 10);
-      } else if(c == 'x' || c == 'p'){
+      } else if(c == 'x'){
         int h = va_arg(ap, int);
         uart_putint(h, 16);
+      } else if(c == 'p'){
+        u64 ptr = va_arg(ap, u64);
+        uart_printptr(ptr);
       } else if(c == 's'){
         char *s = va_arg(ap, char*);
         if(s == 0)
