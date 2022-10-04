@@ -56,10 +56,17 @@ The procedure is as follows.
 [x] logger
    - [x] printf
    - [x] logging w/ file name & line number
-[] switch kernel pgtbl when entered C
 [] kernel memory allocation
+   - [] mmu
+[] switch kernel pgtbl when entered C
+   - [] page table walk
+   - [] page table setup and write to cr3
 [] process
 [] scheduling
 [] user space
 [] trap
+[] filesystem
+   - [] inode
+   - [] initramfs
+   - [] image file system
 
