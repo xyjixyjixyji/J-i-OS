@@ -1,5 +1,6 @@
 # J(i)OS
 A 64 bit, amd64 compatible operating system from scratch.
+The code contains a bootloader and a kernel. Currently kernel is able to allocate kernel heap memory.
 
 # Directory
 boot -> bootloader, from real mode -> protected mode -> long mode (heavily borrowed from osdev.org)
@@ -70,3 +71,4 @@ The procedure is as follows.
    - [] initramfs
    - [] image file system
 
+Ji Xinyou
