@@ -7,7 +7,6 @@
  * @brief The logger implementation of J-i-OS, the logger uses a macro approach
  *        for utilizing builtin macros line __FILE__, __LINE__ and letting them
  *        show correct message.
- * @version 0.1
  * @date 2022-10-04
  * 
  * @copyright Copyright (c) 2022
