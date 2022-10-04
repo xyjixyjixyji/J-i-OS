@@ -53,8 +53,8 @@ The procedure is as follows.
    - [x] remap pic
    - [x] keyboard interrupt
    - [x] timer interrupt
-[] change preset pagetable in kernel
-   - [] kernel pagetable in C
+[x] printf
+[] switch kernel pgtbl when entered C
 [] kernel memory allocation
 [] process
 [] scheduling

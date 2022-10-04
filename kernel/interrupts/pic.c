@@ -8,7 +8,7 @@ io_wait()
     w_port(PIC_WAIT_PORT, 0);
 }
 
-// we ma ke master holds offset 0, slave holds offset 8
+// we make master holds offset 0, slave holds offset 8
 void
 pic_remap()
 {
@@ -18,26 +18,26 @@ pic_remap()
 
     w_port(MPIC_CMD, ICW1_INIT | ICW1_ICW4);  // starts the initialization sequence (in cascade mode)
     io_wait();
-	w_port(SPIC_CMD, ICW1_INIT | ICW1_ICW4);
+    w_port(SPIC_CMD, ICW1_INIT | ICW1_ICW4);
     io_wait();
 
-	w_port(MPIC_DATA, MPIC_OFF);       // ICW2: Master PIC vector offset
+    w_port(MPIC_DATA, MPIC_OFF);       // ICW2: Master PIC vector offset
     io_wait();
-	w_port(SPIC_DATA, SPIC_OFF);       // ICW2: Slave PIC vector offset
+    w_port(SPIC_DATA, SPIC_OFF);       // ICW2: Slave PIC vector offset
     io_wait();
 
-	w_port(MPIC_DATA, 4);       // ICW3: tell Master PIC that there is a slave PIC at IRQ2 (0000 0100)
+    w_port(MPIC_DATA, 4);       // ICW3: tell Master PIC that there is a slave PIC at IRQ2 (0000 0100)
     io_wait();
-	w_port(SPIC_DATA, 2);       // ICW3: tell Slave PIC its cascade identity (0000 0010)
-    io_wait();
- 
-	w_port(MPIC_DATA, ICW4_8086);
-    io_wait();
-	w_port(SPIC_DATA, ICW4_8086);
+    w_port(SPIC_DATA, 2);       // ICW3: tell Slave PIC its cascade identity (0000 0010)
     io_wait();
  
-	w_port(MPIC_DATA, m1);   // restore saved masks.
-	w_port(SPIC_DATA, m2);
+    w_port(MPIC_DATA, ICW4_8086);
+    io_wait();
+    w_port(SPIC_DATA, ICW4_8086);
+    io_wait();
+ 
+    w_port(MPIC_DATA, m1);   // restore saved masks.
+    w_port(SPIC_DATA, m2);
 }
 
 void

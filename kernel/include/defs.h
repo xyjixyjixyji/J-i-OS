@@ -9,6 +9,7 @@ void vga_init();
 void vga_clear();
 void vga_putc(const char);
 void vga_putstr(const char*);
+void vga_putu64(const u64);
 
 // port.c
 u8 r_port(u16);
@@ -19,8 +20,8 @@ void exitvm(u32);
 
 // uart.c
 void uart_init();
-void uart_putstr(const char*);
-void uart_putint(int, int);
+void uart_panic(const char*, ...);
+void uart_printf(const char*, ...);
 
 // idt.c
 void idt_load();
@@ -36,8 +37,10 @@ void irq_handler(isf);
 void pic_remap();
 void end_interrupt(u8);
 
-
 // utils.c
 char* itoa(int, char*, unsigned);
+
+// vm.c
+u64 r_cr3();
 
 #endif

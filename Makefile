@@ -2,6 +2,8 @@ B=boot
 K=kernel
 U=user
 
+CC=gcc
+
 QEMU=qemu-system-x86_64
 
 QEMUARGS = -drive format=raw,file=os.img \
@@ -13,7 +15,7 @@ QEMUTESTARGS = $(QEMUARGS) -display none
 .PHONY: qemu sz lldb clean
 
 qemu: img
-	$(QEMU) $(QEMUARGS)
+	-@$(QEMU) $(QEMUARGS)
 
 test: img
 	$(QEMU) $(QEMUTESTARGS)
@@ -22,9 +24,9 @@ test: img
 # dd if=boot/boot of=os.img bs=512 conv=notrunc
 # dd if=kernel/kernel of=os.img bs=512 seek=3 conv=notrunc
 img:
-	make clean
-	make -C $B && make -C $K
-	cp $B/boot ./os.img && cat $K/kernel >> os.img
+	@make clean
+	@make -C $B && make -C $K
+	@cp $B/boot ./os.img && cat $K/kernel >> os.img
 
 BYTESZ=$(shell wc -c < os.img)
 sz:
@@ -35,7 +37,7 @@ lldb:
     lldb -ex "target remote localhost:1234" -ex "symbol-file kernel/kernel.elf"
 
 clean:
-	find . -name "*.o"  | xargs rm -f
-	find . -name "*.elf"  | xargs rm -f
-	rm -rf $K/kernel $B/boot *.img
+	@find . -name "*.o"  | xargs rm -f
+	@find . -name "*.elf"  | xargs rm -f
+	@rm -rf $K/kernel $B/boot *.img
 

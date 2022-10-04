@@ -1,10 +1,14 @@
 #include "include/defs.h"
+#include "include/types.h"
 #include "include/uart.h"
+#include "stdarg.h"
 
 #define WriteReg(reg, v) (w_port(reg, v))
 #define ReadReg(reg) (r_port(reg))
 
 #define WAITFOR(cond) do {while(!(cond));} while(0)
+
+static void uart_vprintf(const char* fmt, va_list ap);
 
 static volatile srlport uart0 = {
     .data = (u16)UART0,
@@ -75,12 +79,9 @@ uart_sendc(u8 rb)
     }
     WAITFOR(uart_lstat() & OUTPUT_EMPTY);
     WriteReg(uart0.data, rb);
-    // if (!(uart_lstat() & OUTPUT_EMPTY)) {
-	//     VGA_putint(123, 10);
-    // }
 }
 
-void
+static void
 uart_putstr(const char* s)
 {
     while(*s){
@@ -89,10 +90,74 @@ uart_putstr(const char* s)
     }
 }
 
-void
-uart_putc(int n, int radix)
+static void
+uart_putint(int n, int radix)
 {
     char str[32];
     itoa(n, str, radix);
     uart_putstr(str);
+}
+
+void
+uart_panic(const char* fmt, ...)
+{
+    va_list ap;
+    va_start(ap, fmt);
+    uart_vprintf(fmt, ap);
+    while(1)
+	;
+}
+
+void
+uart_printf(const char* fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+  uart_vprintf(fmt, ap);
+}
+
+static void
+uart_vprintf(const char* fmt, va_list ap)
+{
+  char *s;
+  int c, i, state;
+
+  state = 0;
+  for(i = 0; fmt[i]; i++){
+    c = fmt[i] & 0xff; // ascii
+    if(state == 0){
+      if(c == '%'){
+        state = '%';
+      } else {
+        uart_sendc(c);
+      }
+    } else if(state == '%'){
+      if(c == 'd'){
+        int d = va_arg(ap, int);
+        uart_putint(d, 10);
+      } else if(c == 'x' || c == 'p'){
+        int h = va_arg(ap, int);
+        uart_putint(h, 16);
+      } else if(c == 's'){
+        char *s = va_arg(ap, char*);
+        if(s == 0)
+          s = "(null)";
+        while(*s != 0){
+          uart_sendc(*s);
+          s++;
+        }
+      } else if(c == 'c'){
+        char c = va_arg(ap, int);
+        uart_sendc(c);
+      } else if(c == '%'){
+        uart_sendc(c);
+      } else {
+        // Unknown % sequence.  Print it to draw attention.
+        uart_sendc('%');
+        uart_sendc('c');
+      }
+      state = 0;
+    }
+  }
+  va_end(ap);
 }

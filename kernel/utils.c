@@ -1,5 +1,10 @@
+/*
+ * change val to a string, stored in buf
+ */
+#include "include/types.h"
+
 void
-itoa(int val, char *buf, unsigned radix)
+itoa(u64 val, char *buf, u8 radix)
 {
     char *p;             
     char *firstdig;      

@@ -14,6 +14,9 @@ vga_color(const u8 fg, const u8 bg)
     return (bg << 4) | (fg & 0xF);
 }
 
+/*
+ * change (r, c) to idx in VGA buffer
+ */
 static inline u64
 rc2idx(const int r, const int c)
 {
@@ -110,4 +113,13 @@ vga_putstr(const char *str)
         vga_putc(*str);
         str++;
     }
+}
+
+void
+vga_putu64(const u64 val)
+{
+    char buf[32];
+    itoa(val, buf, 16);
+    vga_putstr("0x");
+    vga_putstr(buf);
 }
