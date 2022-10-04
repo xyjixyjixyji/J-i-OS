@@ -23,10 +23,14 @@ test: img
 # dd if=/dev/zero of=os.img bs=512 count=8192
 # dd if=boot/boot of=os.img bs=512 conv=notrunc
 # dd if=kernel/kernel of=os.img bs=512 seek=3 conv=notrunc
+# @cp $B/boot ./os.img && cat $K/kernel >> os.img
 img:
 	@make clean
 	@make -C $B && make -C $K
-	@cp $B/boot ./os.img && cat $K/kernel >> os.img
+	dd if=/dev/zero of=os.img bs=512 count=10000
+	dd if=boot/boot of=os.img bs=512 conv=notrunc
+	dd if=kernel/kernel of=os.img bs=512 seek=3 conv=notrunc
+
 
 BYTESZ=$(shell wc -c < os.img)
 sz: img

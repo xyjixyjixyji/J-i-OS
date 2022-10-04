@@ -2,7 +2,7 @@ ENTRY( _entry )
 
 SECTIONS
 {
-    . = 0x8200; /* kernel is at 0x9000 */
+    . = 0x8200;
 
     .text : {
         *(.text.prologue); /* this is for setting everything after _entry */

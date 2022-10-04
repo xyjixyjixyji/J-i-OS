@@ -1,6 +1,5 @@
 #include "include/defs.h"
 #include "include/x64.h"
-#include "include/stack.h"
 #include "include/logger.h"
 
 void init();
@@ -16,9 +15,6 @@ void
 init()
 {
     LOG_INFO("\n\nJ-i-OS Initializing...");
-
-    LOG_INFO("Kernel Stack Initializing");
-    // kstack_init();
 
     LOG_INFO("UART Initialzing...");
     uart_init();
