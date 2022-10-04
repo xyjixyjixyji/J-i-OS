@@ -1,6 +1,19 @@
 #ifndef __LOGGER_H
 #define __LOGGER_H
 
+/**
+ * @file logger.h
+ * @author Ji-Xinyou (jerryji0414@outlook.com)
+ * @brief The logger implementation of J-i-OS, the logger uses a macro approach
+ *        for utilizing builtin macros line __FILE__, __LINE__ and letting them
+ *        show correct message.
+ * @version 0.1
+ * @date 2022-10-04
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include "defs.h"
 
 #if !defined(__FUNCTION__) && !defined(__GNUC__)

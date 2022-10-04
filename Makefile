@@ -29,7 +29,7 @@ img:
 	@cp $B/boot ./os.img && cat $K/kernel >> os.img
 
 BYTESZ=$(shell wc -c < os.img)
-sz:
+sz: img
 	@echo "Byte=$(BYTESZ)"
 
 lldb:
