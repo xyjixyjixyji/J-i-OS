@@ -16,7 +16,9 @@ init_pm: ; we are now using 32-bit instructions
     mov fs, ax
     mov gs, ax
 
-    mov ebp, 0x90000 ; 6. update the stack right at the top of the free space
+    ; the first 2MB is setup in pgtbl, we put the kernel stack first on a page below that
+    ; 2MB - 4KB = 0x1FF000
+    mov ebp, 0x200000 ; 6. update the stack right at the top of the free space
     mov esp, ebp
 
     call BEGIN_PM ; 7. Call a well-known label with useful code

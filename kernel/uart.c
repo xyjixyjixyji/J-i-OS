@@ -150,6 +150,8 @@ uart_vprintf(const char* fmt, va_list ap)
         int h = va_arg(ap, int);
         uart_putint(h, 16);
       } else if(c == 'p'){
+        uart_sendc('0');
+        uart_sendc('x');
         u64 ptr = va_arg(ap, u64);
         uart_printptr(ptr);
       } else if(c == 's'){

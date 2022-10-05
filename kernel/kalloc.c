@@ -38,12 +38,13 @@ struct {
 static void
 free(char* vstart, char* vend)
 {
-    int a = 0;
     char* p = (char*)PGROUNDUP((u64)vstart);
-    for(; p + PGSIZE <= vend; p += PGSIZE) {
-        a++;
+    for(; p + PGSIZE < vend; p += PGSIZE) {
         kfree(p);
     }
+
+    int npages = (u64)(p - PGSIZE) / PGROUNDUP((u64)vstart);
+    LOG_INFO("freed %d pages from %p to %p", npages, vstart, vend);
 }
 
 // if there is free mem, return va
@@ -63,7 +64,6 @@ kalloc()
 void
 kfree(char* va)
 {
-    LOG_INFO("freeing va %p", va);
     struct run *r;
 
     // aligned, bounded
