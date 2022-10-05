@@ -27,17 +27,6 @@ Run `make format` to format the codes in GNU style.
 boot -> bootloader, from real mode -> protected mode -> long mode (heavily borrowed from osdev.org)
 kernel -> kernel code, style like xv6 (MIT 6.828)
 
-# Acknowledgement
-I write this OS project mainly for 2 reasons. First is for my personal interest on the bottom-up process
-of a freestanding operating system. Second is to leave the git log for everyone looking at this repository, 
-to check the developement process of this OS, most commit is bug-free, and being commented relatively clear.
-During the development, I reference many tutorials and websites, including youtube tutorial by @Poncho, stackoverflow
-questions, osdev wiki and github repo 64bit-os-tutorial. I am here to thank every single webpage that help me
-through the development.
-
-If you have found any bug or have any questions, please feel free to issue them in the github issue section, or
-email me straight to jerryji0414[at]outlook[dot]com.
-
 # Run
 make qemu:
     run in qemu, with display
@@ -93,3 +82,14 @@ The procedure is as follows.
    - [] image file system
 
 Ji Xinyou
+
+# Acknowledgement
+I write this OS project mainly for 2 reasons. First is for my personal interest on the bottom-up process
+of a freestanding operating system. Second is to leave the git log for everyone looking at this repository, 
+to check the developement process of this OS, most commit is bug-free, and being commented relatively clear.
+During the development, I reference many tutorials and websites, including youtube tutorial by @Poncho, stackoverflow
+questions, osdev wiki and github repo 64bit-os-tutorial, also borrowed some codes from xv6. I am here to thank every 
+person that help me through the development by any means.
+
+If you have found any bug or have any questions, please feel free to issue them in the github issue section, or
+email me straight to jerryji0414[at]outlook[dot]com.
