@@ -47,5 +47,5 @@ lldb:
 clean:
 	@find . -name "*.o"  | xargs rm -f
 	@find . -name "*.elf"  | xargs rm -f
-	@rm -rf $K/kernel $B/boot *.img
+	@rm -rf $K/kernel $B/boot ./*.img
 
