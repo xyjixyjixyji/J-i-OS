@@ -3,7 +3,7 @@
 
 #include "../types.h"
 
-#define NINTRS          64      // # of interrupt handlers
+#define NINTRS 64 // # of interrupt handlers
 
 //
 // ISRs
@@ -12,11 +12,12 @@
 // this is defined by the process that a ISR is called;
 // from bottom up, the registers are push onto stack, and treated
 // as the parameter when C function is called.(ABI)
-typedef struct __attribute__((packed)) {
-    u64 ds;
-    u64 rdi, rsi, rbp, rsp, rdx, rcx, rbx, rax;
-    u64 intr_nr, err_code;
-    u64 rip, cs, eflags, user_rsp, ss;
+typedef struct __attribute__((packed))
+{
+  u64 ds;
+  u64 rdi, rsi, rbp, rsp, rdx, rcx, rbx, rax;
+  u64 intr_nr, err_code;
+  u64 rip, cs, eflags, user_rsp, ss;
 } isf;
 
 // called by C function, actually code is in isr_wrap.S
@@ -57,7 +58,7 @@ extern void isr_32(); // controlled by PIC, timer
 extern void isr_33(); // controlled by PIC, keyboard
 
 #define IRQ_DOUBLEFAULT 8
-#define IRQ_TIMER       32
-#define IRQ_KB          IRQ_TIMER + 1
+#define IRQ_TIMER 32
+#define IRQ_KB IRQ_TIMER + 1
 
 #endif

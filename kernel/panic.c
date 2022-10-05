@@ -2,9 +2,9 @@
 
 // print and loop
 void
-panic(const char* fmt, ...)
+panic(const char *fmt, ...)
 {
-    va_list ap;
-    va_start(ap, fmt);
-    uart_panic(fmt, ap);
+  va_list ap;
+  va_start(ap, fmt);
+  uart_panic(fmt, ap);
 }

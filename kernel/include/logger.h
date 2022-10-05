@@ -8,9 +8,9 @@
  *        for utilizing builtin macros line __FILE__, __LINE__ and letting them
  *        show correct message.
  * @date 2022-10-04
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 #include "defs.h"
@@ -19,33 +19,39 @@
 #define __FUNCTION__ ""
 #endif
 
-#define LOG_INFO(...)  LOG("[INFO]:\t", __VA_ARGS__)
+#define LOG_INFO(...) LOG("[INFO]:\t", __VA_ARGS__)
 #define LOG_DEBUG(...) LOG("[DEBUG]:\t", __VA_ARGS__)
 #define LOG_ERROR(...) LOG("[ERROR]:\t", __VA_ARGS__)
-#define KLOG(...)      LOG_WOPREFIX(__VA_ARGS__)  // no file name, no line num
+#define KLOG(...) LOG_WOPREFIX(__VA_ARGS__) // no file name, no line num
 
-#define __LOG_PREFIX() \
-do { \
-    uart_printf(__FILE__); \
-    uart_printf(":"); \
-    char buf[32]; \
-    itoa(__LINE__, buf, 10); \
-    uart_printf(buf); \
-    uart_printf("\t"); \
-} while (0)
+#define __LOG_PREFIX()                                                        \
+  do                                                                          \
+    {                                                                         \
+      uart_printf(__FILE__);                                                  \
+      uart_printf(":");                                                       \
+      char buf[32];                                                           \
+      itoa(__LINE__, buf, 10);                                                \
+      uart_printf(buf);                                                       \
+      uart_printf("\t");                                                      \
+    }                                                                         \
+  while(0)
 
-#define LOG(prefix, ...) \
-do { \
-    __LOG_PREFIX(); \
-    uart_printf(prefix); \
-    uart_printf(__VA_ARGS__); \
-    uart_printf("\n"); \
-} while(0)
+#define LOG(prefix, ...)                                                      \
+  do                                                                          \
+    {                                                                         \
+      __LOG_PREFIX();                                                         \
+      uart_printf(prefix);                                                    \
+      uart_printf(__VA_ARGS__);                                               \
+      uart_printf("\n");                                                      \
+    }                                                                         \
+  while(0)
 
-#define LOG_WOPREFIX(...) \
-do { \
-    uart_printf(__VA_ARGS__); \
-    uart_printf("\n"); \
-} while(0)
+#define LOG_WOPREFIX(...)                                                     \
+  do                                                                          \
+    {                                                                         \
+      uart_printf(__VA_ARGS__);                                               \
+      uart_printf("\n");                                                      \
+    }                                                                         \
+  while(0)
 
 #endif

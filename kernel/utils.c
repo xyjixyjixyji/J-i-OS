@@ -6,45 +6,50 @@
 void
 itoa(u64 val, char *buf, u8 radix)
 {
-    char *p;             
-    char *firstdig;      
-    char temp;           
-    unsigned digval;     
-    p = buf;
-    if(val < 0)
+  char *p;
+  char *firstdig;
+  char temp;
+  unsigned digval;
+  p = buf;
+  if(val < 0)
     {
-        *p++ = '-';
-        val = (unsigned long)(-(long)val);
+      *p++ = '-';
+      val = (unsigned long)(-(long)val);
     }
-    firstdig = p; 
-    do{
-        digval = (unsigned)(val % radix);
-        val /= radix;
-       
-        if  (digval > 9)
-            *p++ = (char)(digval - 10 + 'a'); 
-        else
-            *p++ = (char)(digval + '0');      
-    } while(val);
-   
-    *p-- = '\0';         
-    do{
-        temp = *p;
-        *p = *firstdig;
-        *firstdig = temp;
-        --p;
-        ++firstdig;        
-    } while(firstdig < p);  
+  firstdig = p;
+  do
+    {
+      digval = (unsigned)(val % radix);
+      val /= radix;
+
+      if(digval > 9)
+        *p++ = (char)(digval - 10 + 'a');
+      else
+        *p++ = (char)(digval + '0');
+    }
+  while(val);
+
+  *p-- = '\0';
+  do
+    {
+      temp = *p;
+      *p = *firstdig;
+      *firstdig = temp;
+      --p;
+      ++firstdig;
+    }
+  while(firstdig < p);
 }
 
-char*
-memset(char* dst, u64 c, u32 nb)
+char *
+memset(char *dst, u64 c, u32 nb)
 {
-    // if dst++, it increments 8 bytes
-    u32 i;
-    for(i = 0; i < nb; i++){
-        dst[i] = (c | (c << 8) | (c << 16) | (c << 24) | (c << 32) | (c << 40) | (c << 48) | (c << 56));
+  // if dst++, it increments 8 bytes
+  u32 i;
+  for(i = 0; i < nb; i++)
+    {
+      dst[i] = (c | (c << 8) | (c << 16) | (c << 24) | (c << 32) | (c << 40)
+                | (c << 48) | (c << 56));
     }
-    return dst;
+  return dst;
 }
-
