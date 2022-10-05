@@ -1,6 +1,8 @@
 #ifndef __IDT_H
 #define __IDT_H
 
+#include "../types.h"
+
 #define KERNEL_CS_SEL 0x08 // 0x0000 1000 => index 1 in gdt => Code Segment
 #define INTR_ATTR 0x8E     // INTERRUPT ATTR
 #define NGATES 256         // # of entries in idt

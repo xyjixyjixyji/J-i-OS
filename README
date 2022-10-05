@@ -2,6 +2,27 @@
 A 64 bit, amd64 compatible operating system from scratch.
 The code contains a bootloader and a kernel. Currently kernel is able to allocate kernel heap memory.
 
+# Build and Run
+## Prerequisite
+You will need
+    - qemu-system-x86_64
+    - clang
+    - ld.lld
+    - nasm
+    - (optional) clang-format
+And thats it.
+
+In kernel/Makefile, `LD` is set to `LD = /usr/local/Cellar/llvm/12.0.1/bin/ld.lld`
+Use your path instead.
+
+## Build and Run
+After the preparation, under `some-path/J-i-OS`, run `make test` to run the O/S and get the output from stdout.
+
+Or, run `make qemu` to run the O/S with a vga buffer, I DO NOT recommend this since all logging and output
+are currently through uart to stdout.
+
+Run `make format` to format the codes in GNU style.
+
 # Directory
 boot -> bootloader, from real mode -> protected mode -> long mode (heavily borrowed from osdev.org)
 kernel -> kernel code, style like xv6 (MIT 6.828)
