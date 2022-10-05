@@ -37,3 +37,14 @@ itoa(u64 val, char *buf, u8 radix)
     } while(firstdig < p);  
 }
 
+char*
+memset(char* dst, u64 c, u32 nb)
+{
+    // if dst++, it increments 8 bytes
+    u32 i;
+    for(i = 0; i < nb; i++){
+        dst[i] = (c | (c << 8) | (c << 16) | (c << 24) | (c << 32) | (c << 40) | (c << 48) | (c << 56));
+    }
+    return dst;
+}
+

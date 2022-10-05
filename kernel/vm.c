@@ -6,7 +6,7 @@
 pte_t*
 kvm_setup()
 {
-
+    return NULL;
 }
 
 // initialization of kernel virtual memory
@@ -14,5 +14,5 @@ void
 kvm_init()
 {
     pte_t *dir = kvm_setup();
-    w_cr3(dir);
+    w_cr3((u64)dir);
 }

@@ -40,15 +40,19 @@ void    pic_remap();
 void    end_interrupt(u8);
 
 // utils.c
-char*   itoa(int, char*, unsigned);
+char*   itoa(int, char*, u8);
+int     atoi(const char*);
+char*   memset(char*, u8, u32);
+char*   memmove(char*, const char*, int n);
+int     strcmp(const char*, const char*);
+u32     strlen(const char*);
 
 // panic.c
 void    panic(const char*, ...);
 
 // kalloc.c
-u64     kalloc();
-void    kfree(u64);
-void    kinit_scratch(u64, u64);
-void    kinit_final(u64, u64);
+char*   kalloc();
+void    kfree(char*);
+void    kinit(char*, char*);
 
 #endif

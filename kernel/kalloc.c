@@ -1,4 +1,6 @@
 #include "include/defs.h"
+#include "include/mmu.h"
+#include "include/memlayout.h"
 
 /**
  * Kernel heap memory allocation implementation
@@ -30,26 +32,52 @@ struct {
     struct run *free;
 } kmem;
 
-u64
+// free a range of (vstart, vend)
+// if vstart is not page aligned, round up
+static void
+free(char* vstart, char* vend)
+{
+    char* p = (char*)PGROUNDUP((u64)vstart);
+    for(; p + PGSIZE <= vend; p += PGSIZE) {
+        kfree(p);
+    }
+}
+
+// if there is free mem, return va
+// else return NULL
+char*
 kalloc()
 {
-
+    struct run *r;
+    r = kmem.free;
+    if (r) {
+        kmem.free = r->next;
+    }
+    return (char*)r;
 }
 
+// free a page start with va, has to be page aligned
 void
-kfree(u64 va)
+kfree(char* va)
 {
+    struct run *r;
 
+    // aligned, bounded
+    if (va < end || V2P(va) >= PHYSTOP || (u64)va % PGSIZE) {
+        panic("kfree");
+    }
+
+    // junk
+    memset(va, 5, PGSIZE);
+
+    r = (struct run*)va;
+    r->next = kmem.free;
+    kmem.free = r;
 }
 
-// we can free 0x4000 -> text, end -> 0x4000 + 2MB
+// end -> 0x4000 + 2MB
 void
-kinit_scratch(u64 va_start, u64 va_end)
+kinit(char* va_start, char* va_end)
 {
-
-}
-
-void kinit_final(u64 va_start, u64 va_end)
-{
-
+    free(va_start, va_end);
 }

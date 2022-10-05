@@ -17,7 +17,7 @@ _start()
 void
 init()
 {
-    LOG_INFO("\n\nJ-i-OS Initializing...");
+    LOG_INFO("J-i-OS Initializing...");
 
     LOG_INFO("UART Initialzing...");
     uart_init();
