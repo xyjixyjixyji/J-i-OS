@@ -11,6 +11,14 @@ r_cr3()
     return val;
 }
 
+static inline u64
+r_rsp()
+{
+    u64 val;
+    asm volatile ("movq %%rsp,%0": "=r"(val));
+    return val;
+}
+
 static inline void
 w_cr3(u64 val)
 {

@@ -68,8 +68,11 @@ init_pgtbl_prot:
     ; set up the lv1 page table
     ; we make identity mapping in PT, we do this by using loop
     ; ecx is used as counter
+    ;
+    ; Lv1 tbl size should be less then 4KB, and each entry is 8B
+    ; Therefore we can have at most 512 entries in one tbl
     mov ebx, 0x00000003 ; prot
-    mov ecx, 512       ; 1024 entries
+    mov ecx, 512        ; 512 entries
 
     add_pte_to_lv1:
         mov dword[edi], ebx

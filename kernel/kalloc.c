@@ -1,6 +1,7 @@
 #include "include/defs.h"
 #include "include/mmu.h"
 #include "include/memlayout.h"
+#include "include/logger.h"
 
 /**
  * Kernel heap memory allocation implementation
@@ -37,8 +38,10 @@ struct {
 static void
 free(char* vstart, char* vend)
 {
+    int a = 0;
     char* p = (char*)PGROUNDUP((u64)vstart);
     for(; p + PGSIZE <= vend; p += PGSIZE) {
+        a++;
         kfree(p);
     }
 }
@@ -60,6 +63,7 @@ kalloc()
 void
 kfree(char* va)
 {
+    LOG_INFO("freeing va %p", va);
     struct run *r;
 
     // aligned, bounded

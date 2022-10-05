@@ -11,7 +11,7 @@ ASM_SRC = $(shell find . -type f -name "*.S")
 
 OBJ = ${ASM_SRC:.S=.o} ${SRC:.c=.o} 
 
-CCFLAGS = -ggdb -c -ffreestanding -Werror -target x86_64-none-elf
+CCFLAGS = -ggdb -c -ffreestanding -fomit-frame-pointer -Werror -target x86_64-none-elf
 # LDFLAGS = -Ttext 0x8200
 LDFLAGS = -Tkernel.ld
 LDFLAGS_BIN = ${LDFLAGS} --oformat binary

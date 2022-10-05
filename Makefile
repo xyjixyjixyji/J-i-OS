@@ -7,6 +7,7 @@ CC=gcc
 QEMU=qemu-system-x86_64
 
 QEMUARGS = -drive format=raw,file=os.img \
+		   -m 512 \
 		   -device isa-debug-exit,iobase=0xf4,iosize=0x04 \
 		   -serial stdio
 
