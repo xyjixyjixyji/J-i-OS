@@ -6,6 +6,7 @@
 
 extern char end[];
 
+void ckinvar();
 void init();
 void kinit1();
 void register_info();
@@ -13,6 +14,7 @@ void register_info();
 void
 _start()
 {
+  ckinvar();
   init();
 }
 
@@ -41,6 +43,14 @@ init()
 }
 
 void
+ckinvar()
+{
+  if(PHYSTOP >= USERBASE) {
+    panic("PHYSTOP >= USERBASE");
+  }
+}
+
+void
 kinit1(char *vs, char *ve)
 {
   kinit(vs, ve);
@@ -49,6 +59,6 @@ kinit1(char *vs, char *ve)
 void
 register_info()
 {
-  LOG_INFO("cr3 is at %p", r_cr3());
-  LOG_INFO("rsp is at %p", r_rsp());
+  LOG_WPREFIX("[REGINFO]: ", "cr3 is at %p", r_cr3());
+  LOG_WPREFIX("[REGINFO]: ", "rsp is at %p", r_rsp());
 }

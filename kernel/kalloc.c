@@ -72,7 +72,7 @@ kfree(char *va)
   struct run *r;
 
   // aligned, bounded
-  if(va < end || V2P(va) >= PHYSTOP || (u64)va % PGSIZE)
+  if(va < end || (u64)va >= PHYSTOP || (u64)va % PGSIZE)
     {
       panic("kfree");
     }
