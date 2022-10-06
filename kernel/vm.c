@@ -22,7 +22,8 @@
 //
 // In general
 // user: from [data..PHYSTOP]
-//    - returns a va from kernel (> USERBASE) mapped to a pa from [data..PHYSTOP]
+//    - returns a va from kernel (> USERBASE) mapped to a pa from
+//    [data..PHYSTOP]
 // [KERN_BASE..data] -> [KERN_BASE..data] no_perm
 // [data..PHYSTOP]   -> [data..PHYSTOP]   RW_perm
 //    - freed in kinit2()

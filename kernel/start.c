@@ -45,9 +45,10 @@ init()
 void
 ckinvar()
 {
-  if(PHYSTOP >= USERBASE) {
-    panic("PHYSTOP >= USERBASE");
-  }
+  if(PHYSTOP >= USERBASE)
+    {
+      panic("PHYSTOP >= USERBASE");
+    }
 }
 
 void
