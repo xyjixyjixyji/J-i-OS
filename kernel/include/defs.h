@@ -40,9 +40,9 @@ void pic_remap();
 void end_interrupt(u8);
 
 // utils.c
-char *itoa(int, char *, u8);
+void itoa(int, char *, u8);
 int atoi(const char *);
-char *memset(char *, u8, u32);
+char *memset(char *, u64, u32);
 char *memmove(char *, const char *, int n);
 int strcmp(const char *, const char *);
 u32 strlen(const char *);
@@ -54,5 +54,9 @@ void panic(const char *, ...);
 char *kalloc();
 void kfree(char *);
 void kinit(char *, char *);
+
+// vm.c
+pte_t *kvm_setup();
+void kvm_init();
 
 #endif

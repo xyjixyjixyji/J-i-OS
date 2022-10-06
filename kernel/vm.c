@@ -1,4 +1,6 @@
 #include "include/defs.h"
+#include "include/logger.h"
+#include "include/mmu.h"
 #include "include/types.h"
 #include "include/x64.h"
 
@@ -32,7 +34,17 @@
 pte_t *
 kvm_setup()
 {
-  return NULL;
+  LOG_INFO("Setting up kernel pgtbl");
+  pte_t *pml4t;
+  if((pml4t = (pte_t *)kalloc()) == 0)
+    {
+      panic("no kmem for pml4t");
+    }
+  memset((char *)pml4t, 0, PGSIZE);
+
+  // mappages described above
+
+  return pml4t;
 }
 
 // initialization of kernel virtual memory
@@ -40,5 +52,6 @@ void
 kvm_init()
 {
   pte_t *dir = kvm_setup();
+  LOG_INFO("Switching kernel pgtbl");
   w_cr3((u64)dir);
 }

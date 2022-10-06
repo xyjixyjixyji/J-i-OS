@@ -33,6 +33,9 @@ init()
   LOG_INFO("Mapping from %p to %p", end, (char *)SCRATCH_KALLOC_END);
   kinit1(end, (char *)SCRATCH_KALLOC_END);
 
+  LOG_INFO("Kernel VM Initializing...");
+  kvm_init();
+
   LOG_INFO("IDT Initialzing...");
   idt_init();
 
