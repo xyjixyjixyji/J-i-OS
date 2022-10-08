@@ -18,18 +18,36 @@
 
 #define SCRATCH_PGTBL_START (0x1000)
 #define SCRATCH_PGTBL_SZ (4 * (4 << 10)) // 4 levels * 4KB
-#define SCRATCH_PGTBL_END (SCRATCH_PGTBL_START + SCRATCH_MAP_RANGE)
+#define SCRATCH_PGTBL_END (SCRATCH_PGTBL_START + SCRATCH_PGTBL_SZ)
 
 // page table entries
-#define PTE_P 0x01    // present?
-#define PTE_RW 0x02   // R/W?
-#define PTE_US 0x04   // User/Supervisor?
-#define PTE_PWT 0x08  // write through? (unused)
-#define PTE_PCD 0x10  // cache disable? (unused)
-#define PTE_A 0x20    // accessed?
-#define PTE_D 0x40    // dirty?
-#define PTE_PS 0x80   // 4KB? or 4MB?
-#define PTE_G 0x100   // global? (unused)
-#define PTE_PAT 0x200 // page attribute table?
+//
+// SEEK: 47..12 in total 36 bits
+// PML4T[47..39] = PDPT
+// PDPT[38..30] = PD
+// PD[29..21] = PT
+// PT[20..12] = PTE -> va
+//
+// FORMAT
+// PML4E: lv4 -> ptr to lv3 table
+//    63..52: ...
+//    47..12 PML4T physical base addr (9b, 512 entries)
+//    11..0:  ...
+// PDPTE: lv3 -> ptr to lv2 table
+//  format: same above
+// PDE: lv2 -> ptr to lv1 table
+//  format: same above
+// PTE: lv1 -> ptr to va
+//  format:
+//    63..12: same above
+//    11..8:  reserved
+//    else below
+#define PTE_P 0x01  // present?
+#define PTE_RW 0x02 // R/W?
+#define PTE_US 0x04 // User/Supervisor?
+#define PTE_A 0x20  // accessed?
+#define PTE_D 0x40  // dirty?
+
+#define PTE_LV3
 
 #endif

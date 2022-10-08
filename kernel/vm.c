@@ -55,3 +55,10 @@ kvm_init()
   LOG_INFO("Switching kernel pgtbl");
   w_cr3((u64)dir);
 }
+
+// page table walk, from lv4 to pte
+static pte_t *
+walk(pte_t *pml4t, const char *va, int alloc)
+{
+  return NULL;
+}
