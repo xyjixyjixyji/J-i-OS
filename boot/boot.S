@@ -12,9 +12,6 @@
 
     mov byte[boot_drive], dl
 
-    mov bx, MSG_REAL_MODE
-    call print ; This will be written after the BIOS messages
-
     ; before we swtch to pm, we need to load another sector
     mov dx, 0
     mov es, dx
@@ -25,7 +22,6 @@
     mov cx, 100
 
     call disk_load
-
     call switch_to_pm
     jmp $ ; this will actually never be executed
 
@@ -54,11 +50,8 @@ PROT_MODE_START:
 
 [bits 32]
 BEGIN_PM: ; after the switch we will get here
-    call clear_vga_pm
     call detect_lm_prot
-
     call init_pgtbl_prot
-
     call switch_to_lm
 
     jmp $
@@ -91,21 +84,12 @@ times 512-($-PROT_MODE_START) db 0
 ; 0x8200 (our C kernel, use ld to load to that area)
 
 BEGIN_LONG_MODE:
-    mov rdi, COLOR_WHITE_BLUE
-    call clear_vga_lm
-
-    mov rdi, COLOR_WHITE_BLUE
-    mov rsi, MSG_LM_OK
-    call print_string_lm
-
     call kernel_start
-
     jmp $
 
 %include "./long/long_prt.S"
 
 kernel_start     equ 0x8200
-MSG_LM_OK        db "Running in long mode, paging enabled...", 0
 COLOR_WHITE_BLUE equ 0x1F
 
 times 512-($-BEGIN_LONG_MODE) db 0

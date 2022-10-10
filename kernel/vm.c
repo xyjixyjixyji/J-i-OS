@@ -31,12 +31,12 @@
 //    - freed in kinit2()
 
 // when init() is called, setup a new kernel page table and prepare for jump
-pte_t *
+pml4e_t *
 kvm_setup()
 {
   LOG_INFO("Setting up kernel pgtbl");
-  pte_t *pml4t;
-  if((pml4t = (pte_t *)kalloc()) == 0)
+  pml4e_t *pml4t;
+  if((pml4t = (pml4e_t *)kalloc()) == 0)
     {
       panic("no kmem for pml4t");
     }
@@ -51,14 +51,18 @@ kvm_setup()
 void
 kvm_init()
 {
-  pte_t *dir = kvm_setup();
+  pml4e_t *pml4t = kvm_setup();
   LOG_INFO("Switching kernel pgtbl");
-  w_cr3((u64)dir);
+  w_cr3((u64)pml4t);
 }
 
-// page table walk, from lv4 to pte
+// page table walk, from lv4 to pte, return pte
 static pte_t *
-walk(pte_t *pml4t, const char *va, int alloc)
+walk(pml4e_t *pml4t, const char *va, int alloc)
 {
-  return NULL;
+  pdpte_t *pdpte;
+  pde_t *pde;
+  pte_t *pgtbl;
+
+  return &pgtbl[V2X_LV1(va)];
 }

@@ -2,6 +2,7 @@
 #define __DEFS_H
 
 #include "interrupts/isr.h"
+#include "mmu.h"
 #include "stdarg.h"
 #include "types.h"
 

@@ -15,6 +15,4 @@ typedef unsigned int u32;
 typedef signed long i64;
 typedef unsigned long u64;
 
-typedef unsigned long pte_t; // page table entry
-
 #endif
