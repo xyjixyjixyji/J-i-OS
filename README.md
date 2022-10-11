@@ -2,6 +2,9 @@
 A 64 bit, amd64 compatible operating system from scratch.
 The code contains a bootloader and a kernel. Currently kernel is able to allocate kernel heap memory.
 
+Screenshot:
+![](./images/kmem_done.png)
+
 # Build and Run
 ## Prerequisite
 You will need
