@@ -94,7 +94,9 @@ static void uart_putint(int n, int radix) {
 }
 
 void uart_panic(const char *fmt, va_list ap) {
+  uart_printf("panic: ");
   uart_vprintf(fmt, ap);
+  uart_sendc('\n');
   while (1)
     ;
 }

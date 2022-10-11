@@ -18,6 +18,8 @@ SECTIONS
         *(.rodata .rodata.*)
     }
 
+    . = ALIGN(4096);
+    PROVIDE(data = .);
     .data : {
         . = ALIGN(16);
         *(.sdata .sdata.*)

@@ -31,6 +31,9 @@
 // [data..PHYSTOP]   -> [data..PHYSTOP]   RW_perm
 //    - freed in kinit2()
 
+extern char data[];
+static int mappages(pml4e_t *pml4t, void *va, u64 size, u64 pa, int perm);
+
 // when init() is called, setup a new kernel page table and prepare for jump
 pml4e_t *kvm_setup() {
   LOG_INFO("Setting up kernel pgtbl");
@@ -41,6 +44,18 @@ pml4e_t *kvm_setup() {
   memset((char *)pml4t, 0, PGSIZE);
 
   // mappages described above
+  LOG_INFO("mapping KERNBASE to data(pa: [%p -> %p))", V2P(KERNBASE),
+           V2P(data));
+  if (mappages(pml4t, (void *)KERNBASE, V2P(data) - V2P(KERNBASE),
+               V2P(KERNBASE), 0) < 0) {
+    return NULL;
+  }
+
+  LOG_INFO("mapping data to PHYSTOP(pa: [%p -> %p))", V2P(data), PHYSTOP);
+  if (mappages(pml4t, (void *)data, PHYSTOP - V2P(data), V2P(data), PTE_RW) <
+      0) {
+    return NULL;
+  }
 
   return pml4t;
 }
@@ -98,4 +113,31 @@ static pte_t *walk(pml4e_t *pml4t, const char *va, int alloc) {
   }
 
   return &pgtbl[V2X_LV1(va)];
+}
+
+// Create PTEs for virtual addresses starting at va that refer to
+// physical addresses starting at pa. va and size might not
+// be page-aligned.
+static int mappages(pml4e_t *pml4t, void *va, u64 size, u64 pa, int perm) {
+  char *cur;
+  char *last;
+  pte_t *pte;
+
+  cur = (char *)PGROUNDDOWN((u64)va);
+  last = (char *)PGROUNDDOWN(((u64)va) + size - 1);
+  while (1) {
+    if ((pte = walk(pml4t, cur, 1)) == 0) {
+      return -1;
+    }
+    if (*pte & PTE_P) {
+      panic("remap");
+    }
+    *pte = pa | PTE_P | perm;
+    if (cur == last) {
+      break;
+    }
+    cur += PGSIZE;
+    pa += PGSIZE;
+  }
+  return 0;
 }
