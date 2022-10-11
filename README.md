@@ -27,62 +27,46 @@ are currently through uart to stdout.
 Run `make format` to format the codes in GNU style.
 
 # Directory
-boot -> bootloader, from real mode -> protected mode -> long mode (heavily borrowed from osdev.org)
-kernel -> kernel code, style like xv6 (MIT 6.828)
+`boot` -> bootloader, from real mode -> protected mode -> long mode (referenced osdev.org)
+`kernel` -> kernel code
 
 # Run
-make qemu:
+`make qemu`:
     run in qemu, with display
 
-make test:
+`make test`:
     without display, uart output redirected to stdout
 
-make img:
+`make img`:
     build os.img from bootloader and kernel code
 
-# Kernel code size tip
-The formation of os.img is as follows.
-    - 1. use nasm to assemble the bootloader in to a binary.
-    - 2. use gcc to compile the C kernel code (*.o files), also use nasm to compile kernel assembly to elf64
-    - 3. use ld and linker script to link the kernel codes.
-    - 4. use ld to dump the elf64 file to binary file
-    - 5. use cat to concatenate the bootloader and kernel binary to form os.img
-
-The kernel the sectors after 0x7c00 - 0x7e00 needs to explicitly read by bios interrupt.
-Therefore, we have to specify the code size in boot.S, let the real mode bios interrupt read correct # of sectors
-into memory in advance.
-
-The procedure is as follows.
-    - 1. use `make sz` to output the size of image(in byte)
-    - 2. divide this # by 512(sector size), use the integer below it.
-    - 3. change the cx register to this number in boot.S, before the call of disk_load
-
 # Roadmap
-[x] bootloader
-[x] jump to C kernel
-[x] bigger kernel
-[x] VGA and uart
-[x] setup idt
-   - [x] sample breakpoint interrupt
-   - [x] remap pic
-   - [x] keyboard interrupt
-   - [x] timer interrupt
-[x] logger
-   - [x] printf
-   - [x] logging w/ file name & line number
-[x] kernel memory allocation
-   - [x] mmu
-[x] switch kernel pgtbl when entered C
-   - [x] page table walk
-   - [x] page table setup and write to cr3
-[] process
-[] scheduling
-[] user space
-[] trap
-[] filesystem
-   - [] inode
-   - [] initramfs
-   - [] image file system
+- [x] bootloader
+- [x] jump to C kernel
+- [x] bigger kernel
+- [x] VGA and uart
+- [x] setup idt
+- [x] sample breakpoint interrupt
+- [x] remap pic
+- [x] keyboard interrupt
+- [x] timer interrupt
+- [x] logger
+- [x] printf
+- [x] logging w/ file name & line number
+- [x] kernel memory allocation
+- [x] mmu
+  - [x] switch kernel pgtbl when entered C
+  - [x] page table walk
+  - [x] page table setup and write to cr3
+
+- [ ] process
+- [ ] scheduling
+- [ ] user space
+- [ ] trap
+- [ ] filesystem
+ - [ ] inode
+ - [ ] initramfs
+ - [ ] image file system
 
 Ji Xinyou
 
