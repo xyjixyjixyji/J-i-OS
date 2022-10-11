@@ -34,14 +34,14 @@ void init() {
   LOG_INFO("Kernel VM Initializing...");
   kvm_init();
 
+  LOG_INFO("Freeing from %p to %p", data, (char *)P2V(PHYSTOP));
+  kinit2(SCRATCH_MAP_END, P2V(PHYSTOP));
+
   LOG_INFO("IDT Initialzing...");
   idt_init();
 
   LOG_INFO("VGA buffer Initializing...");
   vga_init();
-
-  LOG_INFO("Freeing from %p to %p", data, (char *)P2V(PHYSTOP >> 2));
-  kinit2(SCRATCH_MAP_END, P2V(PHYSTOP >> 2));
 
   LOG_INFO("Initialization Done. Entering J-i-OS");
 }
