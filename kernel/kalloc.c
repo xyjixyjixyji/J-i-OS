@@ -37,12 +37,15 @@ struct {
 // free a range of (vstart, vend)
 // if vstart is not page aligned, round up
 static void free(char *vstart, char *vend) {
+  int npages;
   char *p = (char *)PGROUNDUP((u64)vstart);
+
+  npages = 0;
   for (; p + PGSIZE < vend; p += PGSIZE) {
     kfree(p);
+    npages++;
   }
 
-  int npages = (u64)(p - PGSIZE) / PGROUNDUP((u64)vstart);
   LOG_INFO("freed %d pages from %p to %p", npages, vstart, vend);
 }
 
@@ -63,6 +66,7 @@ void kfree(char *va) {
 
   // aligned, bounded
   if (va < end || (u64)va >= PHYSTOP || (u64)va % PGSIZE) {
+    LOG_DEBUG("va: %p, end: %p, PHYSTOP: %p", va, end, PHYSTOP);
     panic("kfree");
   }
 

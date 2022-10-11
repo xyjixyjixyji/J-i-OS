@@ -19,9 +19,9 @@
 #define __FUNCTION__ ""
 #endif
 
-#define LOG_INFO(...) LOG_WPREFIX("[INFO]:\t", __VA_ARGS__)
-#define LOG_DEBUG(...) LOG_WPREFIX("[DEBUG]:\t", __VA_ARGS__)
-#define LOG_ERROR(...) LOG_WPREFIX("[ERROR]:\t", __VA_ARGS__)
+#define LOG_INFO(...) LOG_WPREFIX("[INFO]: ", __VA_ARGS__)
+#define LOG_DEBUG(...) LOG_WPREFIX("[DEBUG]: ", __VA_ARGS__)
+#define LOG_ERROR(...) LOG_WPREFIX("[ERROR]: ", __VA_ARGS__)
 #define KLOG(...) LOG_WOPREFIX(__VA_ARGS__)  // no file name, no line num
 
 #define __LOG_PREFIX()       \

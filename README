@@ -69,9 +69,9 @@ The procedure is as follows.
    - [x] logging w/ file name & line number
 [x] kernel memory allocation
    - [x] mmu
-[] switch kernel pgtbl when entered C
-   - [] page table walk
-   - [] page table setup and write to cr3
+[x] switch kernel pgtbl when entered C
+   - [x] page table walk
+   - [x] page table setup and write to cr3
 [] process
 [] scheduling
 [] user space

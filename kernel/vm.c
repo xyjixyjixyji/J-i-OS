@@ -63,7 +63,7 @@ pml4e_t *kvm_setup() {
 // initialization of kernel virtual memory
 void kvm_init() {
   pml4e_t *pml4t = kvm_setup();
-  LOG_INFO("Switching kernel pgtbl");
+  LOG_INFO("Switching kernel pgtbl, cr3: %p", pml4t);
   w_cr3((u64)pml4t);
 }
 
@@ -127,7 +127,7 @@ static int mappages(pml4e_t *pml4t, void *va, u64 size, u64 pa, int perm) {
   last = (char *)PGROUNDDOWN(((u64)va) + size - 1);
   while (1) {
     if ((pte = walk(pml4t, cur, 1)) == 0) {
-      return -1;
+      panic("no pte");
     }
     if (*pte & PTE_P) {
       panic("remap");
