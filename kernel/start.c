@@ -11,16 +11,12 @@ void init();
 void kinit1();
 void register_info();
 
-void
-_start()
-{
+void _start() {
   ckinvar();
   init();
 }
 
-void
-init()
-{
+void init() {
   KLOG("\n......");
   LOG_INFO("J-i-OS Initializing...");
 
@@ -45,24 +41,15 @@ init()
   LOG_INFO("Initialization Done. Entering J-i-OS");
 }
 
-void
-ckinvar()
-{
-  if(PHYSTOP >= USERBASE)
-    {
-      panic("PHYSTOP >= USERBASE");
-    }
+void ckinvar() {
+  if (PHYSTOP >= USERBASE) {
+    panic("PHYSTOP >= USERBASE");
+  }
 }
 
-void
-kinit1(char *vs, char *ve)
-{
-  kinit(vs, ve);
-}
+void kinit1(char *vs, char *ve) { kinit(vs, ve); }
 
-void
-register_info()
-{
+void register_info() {
   LOG_WPREFIX("[REGINFO]: ", "cr3 is at %p", r_cr3());
   LOG_WPREFIX("[REGINFO]: ", "rsp is at %p", r_rsp());
 }

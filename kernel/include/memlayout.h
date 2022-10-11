@@ -2,7 +2,7 @@
 #define __MEM_LAYOUT_H
 
 #define KERNBASE 0x8200
-#define PHYSTOP (256 * 1024 * 1024) // 256 MiB RAM
+#define PHYSTOP (256 * 1024 * 1024)  // 256 MiB RAM
 
 // above are for va of user space
 #define USERBASE 0x80000000

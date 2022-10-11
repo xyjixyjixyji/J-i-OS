@@ -1,6 +1,3 @@
 #include "../include/testdefs.h"
 
-void
-mmu_test()
-{
-}
+void mmu_test() {}

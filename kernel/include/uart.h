@@ -5,8 +5,7 @@
 
 #define UART0 0x3F8
 
-typedef struct __attribute__((packed))
-{
+typedef struct __attribute__((packed)) {
   u16 data;
   u16 inte;
   u16 fifo;

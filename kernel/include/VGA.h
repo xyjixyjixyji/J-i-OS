@@ -27,17 +27,15 @@
 #define CURSOR_PORT_CMD (u16)0x3D4
 #define CURSOR_PORT_DATA (u16)0x3D5
 
-typedef struct __attribute__((packed))
-{
+typedef struct __attribute__((packed)) {
   char ch;
   char color;
 } vga_char;
 
-typedef struct
-{
-  u64 pos_c;     // column position
-  u8 color;      // tty color code
-  vga_char *buf; // buffer ptr
+typedef struct {
+  u64 pos_c;      // column position
+  u8 color;       // tty color code
+  vga_char *buf;  // buffer ptr
 } vga_writer;
 
 #endif

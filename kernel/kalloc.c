@@ -25,27 +25,22 @@
 // from here, we can safely alloc heap memory
 extern char end[];
 
-struct run
-{
+struct run {
   struct run *next;
 };
 
 // currently only single processor, multi-processor will require locking
-struct
-{
+struct {
   struct run *free;
 } kmem;
 
 // free a range of (vstart, vend)
 // if vstart is not page aligned, round up
-static void
-free(char *vstart, char *vend)
-{
+static void free(char *vstart, char *vend) {
   char *p = (char *)PGROUNDUP((u64)vstart);
-  for(; p + PGSIZE < vend; p += PGSIZE)
-    {
-      kfree(p);
-    }
+  for (; p + PGSIZE < vend; p += PGSIZE) {
+    kfree(p);
+  }
 
   int npages = (u64)(p - PGSIZE) / PGROUNDUP((u64)vstart);
   LOG_INFO("freed %d pages from %p to %p", npages, vstart, vend);
@@ -53,29 +48,23 @@ free(char *vstart, char *vend)
 
 // if there is free mem, return va
 // else return NULL
-char *
-kalloc()
-{
+char *kalloc() {
   struct run *r;
   r = kmem.free;
-  if(r)
-    {
-      kmem.free = r->next;
-    }
+  if (r) {
+    kmem.free = r->next;
+  }
   return (char *)r;
 }
 
 // free a page start with va, has to be page aligned
-void
-kfree(char *va)
-{
+void kfree(char *va) {
   struct run *r;
 
   // aligned, bounded
-  if(va < end || (u64)va >= PHYSTOP || (u64)va % PGSIZE)
-    {
-      panic("kfree");
-    }
+  if (va < end || (u64)va >= PHYSTOP || (u64)va % PGSIZE) {
+    panic("kfree");
+  }
 
   // junk
   memset(va, 5, PGSIZE);
@@ -86,8 +75,4 @@ kfree(char *va)
 }
 
 // end -> 0x4000 + 2MB
-void
-kinit(char *va_start, char *va_end)
-{
-  free(va_start, va_end);
-}
+void kinit(char *va_start, char *va_end) { free(va_start, va_end); }

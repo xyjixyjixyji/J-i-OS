@@ -1,5 +1,6 @@
 #include "include/defs.h"
 #include "include/logger.h"
+#include "include/memlayout.h"
 #include "include/mmu.h"
 #include "include/types.h"
 #include "include/x64.h"
@@ -31,15 +32,12 @@
 //    - freed in kinit2()
 
 // when init() is called, setup a new kernel page table and prepare for jump
-pml4e_t *
-kvm_setup()
-{
+pml4e_t *kvm_setup() {
   LOG_INFO("Setting up kernel pgtbl");
   pml4e_t *pml4t;
-  if((pml4t = (pml4e_t *)kalloc()) == 0)
-    {
-      panic("no kmem for pml4t");
-    }
+  if ((pml4t = (pml4e_t *)kalloc()) == 0) {
+    panic("no kmem for pml4t");
+  }
   memset((char *)pml4t, 0, PGSIZE);
 
   // mappages described above
@@ -48,21 +46,56 @@ kvm_setup()
 }
 
 // initialization of kernel virtual memory
-void
-kvm_init()
-{
+void kvm_init() {
   pml4e_t *pml4t = kvm_setup();
   LOG_INFO("Switching kernel pgtbl");
   w_cr3((u64)pml4t);
 }
 
 // page table walk, from lv4 to pte, return pte
-static pte_t *
-walk(pml4e_t *pml4t, const char *va, int alloc)
-{
+static pte_t *walk(pml4e_t *pml4t, const char *va, int alloc) {
+  pml4e_t *pml4e;
+  pdpte_t *pdpt;
   pdpte_t *pdpte;
+  pde_t *pd;
   pde_t *pde;
   pte_t *pgtbl;
+
+  // walk pml4t
+  pml4e = &pml4t[V2X_LV4(va)];
+  if (*pml4e & PTE_P) {
+    pdpt = (pdpte_t *)P2V(PAGEALIGN(*pml4e));
+  } else {
+    if (!alloc || (pdpt = (pdpte_t *)kalloc()) == 0) {
+      return NULL;
+    }
+    memset((char *)pdpt, 0, PGSIZE);
+    *pml4e = V2P(pdpt) | PTE_P | PTE_RW | PTE_US;
+  }
+
+  // walk pdpt
+  pdpte = &pdpt[V2X_LV3(va)];
+  if (*pdpte & PTE_P) {
+    pd = (pdpte_t *)P2V(PAGEALIGN(*pdpte));
+  } else {
+    if (!alloc || (pd = (pde_t *)kalloc()) == 0) {
+      return NULL;
+    }
+    memset((char *)pd, 0, PGSIZE);
+    *pdpte = V2P(pd) | PTE_P | PTE_RW | PTE_US;
+  }
+
+  // walk pd
+  pde = &pd[V2X_LV2(va)];
+  if (*pde & PTE_P) {
+    pgtbl = (pte_t *)P2V(PAGEALIGN(*pde));
+  } else {
+    if (!alloc || (pgtbl = (pte_t *)kalloc()) == 0) {
+      return NULL;
+    }
+    memset((char *)pgtbl, 0, PGSIZE);
+    *pde = V2P(pgtbl) | PTE_P | PTE_RW | PTE_US;
+  }
 
   return &pgtbl[V2X_LV1(va)];
 }
