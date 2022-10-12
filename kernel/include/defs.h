@@ -22,6 +22,7 @@ void exitvm(u32);
 
 // uart.c
 void uart_init();
+void uart_sendc(u8);
 void uart_panic(const char *, va_list ap);
 void uart_printf(const char *, ...);
 void uart_vprintf(const char *, va_list ap);

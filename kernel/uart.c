@@ -62,7 +62,7 @@ void uart_init() {
 
 uart_linests_t uart_lstat() { return ReadReg(uart0.line_stat); }
 
-static void uart_sendc(u8 rb) {
+void uart_sendc(u8 rb) {
   // BS, del
   if (rb == 8 || rb == 0x7f) {
     WAITFOR(uart_lstat() & OUTPUT_EMPTY);
