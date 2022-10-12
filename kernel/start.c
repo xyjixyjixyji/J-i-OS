@@ -16,6 +16,8 @@ void register_info();
 void _start() {
   ck_invar();
   init();
+  LOG_INFO("Invoking asm syscall");
+  asm volatile ("syscall");
 }
 
 void init() {

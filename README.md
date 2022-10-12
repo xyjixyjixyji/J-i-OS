@@ -58,11 +58,17 @@ Run `make format` to format the codes in GNU style.
   - [x] switch kernel pgtbl when entered C
   - [x] page table walk
   - [x] page table setup and write to cr3
-
 - [ ] process
-- [ ] scheduling
-- [ ] user space
+  - [ ] proc struct
+  - [ ] proc allocation
+  - [ ] exec
 - [ ] trap
+  - [ ] serial interrupt control
+- [ ] syscall
+- [ ] user space
+- [ ] scheduling
+
+Not planned to do currently...
 - [ ] filesystem
  - [ ] inode
  - [ ] initramfs

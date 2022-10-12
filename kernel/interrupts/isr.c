@@ -1,9 +1,9 @@
 #include "../include/interrupts/isr.h"
 
 #include "../include/defs.h"
+#include "../include/logger.h"
 #include "../include/interrupts/pic.h"
 #include "../include/kbScancode.h"
-#include "../include/logger.h"
 #include "../include/types.h"
 
 void (*isr_funcs[NINTRS])();  // function ptr to handlers
@@ -22,7 +22,7 @@ char *exception_messages[] = {
 
     "Double Fault\n",
     "Coprocessor Segment Overrun\n",
-    "Bat TSS\n",
+    "Bad TSS\n",
     "Segment not Present\n",
     "Stack Fault\n",
     "General Protection Fault\n",
@@ -51,7 +51,9 @@ char *exception_messages[] = {
     "Keyboard\n",
 };
 
-void doublefault_handler() { panic("double fault"); }
+void doublefault_handler() {
+    panic("double fault");
+}
 
 void timer_handler() {
   // vga_putc('.');
