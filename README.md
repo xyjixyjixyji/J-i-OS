@@ -1,5 +1,7 @@
 # J(i)OS
-This project is archived and will be ported to a Rust version of xv6-like Linux compatible operating system.
+# This project is archived and will be ported to a Rust version of xv6-like Linux compatible operating system.
+
+
 
 A 64 bit, amd64 compatible operating system from scratch.
 
